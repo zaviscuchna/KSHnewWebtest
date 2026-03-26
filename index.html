@@ -138,40 +138,41 @@ nav{
   position:absolute;left:0;top:0;
   font-family:var(--font-display);font-weight:700;
   font-size:inherit;line-height:inherit;letter-spacing:inherit;
-  color:var(--coral);opacity:0;
-  transition:opacity .4s .15s;
+  color:var(--coral);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s .2s;
 }
 .sticker-container:hover .sticker-under-text{opacity:1}
 .sticker-main{
   display:inline-block;position:relative;
   clip-path:polygon(0% 0%,100% 0%,100% 100%,0% 100%);
-  transition:clip-path .6s cubic-bezier(.25,.46,.45,.94);
+  transition:clip-path .7s cubic-bezier(.25,.46,.45,.94);
   filter:url(#dropShadow);
 }
 .sticker-lighting{display:inline-block}
 .sticker-container:hover .sticker-main{
-  clip-path:polygon(0% 40%,100% 40%,100% 100%,0% 100%);
+  clip-path:polygon(0% 80%,100% 80%,100% 100%,0% 100%);
 }
 .flap{
   position:absolute;left:0;top:0;width:100%;height:100%;
   clip-path:polygon(0% 0%,100% 0%,100% 0%,0% 0%);
   transform:scaleY(-1);transform-origin:top;
-  transition:all .6s cubic-bezier(.25,.46,.45,.94);
+  transition:all .7s cubic-bezier(.25,.46,.45,.94);
   pointer-events:none;
 }
 .flap-lighting{display:inline-block}
 .flap-back-text{
   font-family:var(--font-display);font-weight:700;
   font-size:inherit;line-height:inherit;letter-spacing:inherit;
-  color:rgba(255,255,255,.15);
+  color:rgba(255,255,255,.12);
 }
 .sticker-container:hover .flap{
-  clip-path:polygon(0% 0%,100% 0%,100% 40%,0% 40%);
+  clip-path:polygon(0% 0%,100% 0%,100% 80%,0% 80%);
 }
 /* ─── Metallic Canvas (large, right) ───────────────────────────── */
 .hero-metallic-canvas{
-  width:clamp(300px,30vw,500px);height:clamp(300px,30vw,500px);
-  border-radius:24px;display:block;
+  width:clamp(320px,40vw,650px);height:clamp(320px,40vw,650px);
+  border-radius:28px;display:block;
 }
 
 /* ─── Section Shared ───────────────────────────────────────────── */
