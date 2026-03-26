@@ -349,6 +349,7 @@ footer{
 /* ─── Marquee ──────────────────────────────────────────────────── */
 .marquee{
   overflow:hidden;padding:clamp(1.5rem,3vw,2.5rem) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  position:relative;z-index:10;
 }
 .marquee-track{
   display:flex;gap:clamp(2rem,4vw,4rem);animation:marquee 25s linear infinite;width:max-content;
