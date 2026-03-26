@@ -194,31 +194,37 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   display:flex;gap:2vw;will-change:transform;
 }
 .pillar-card{
-  position:relative;min-width:30vw;height:60vh;
-  background:#f5f0eb;border-radius:16px;
-  padding:48px 40px;overflow:hidden;cursor:default;flex-shrink:0;
+  position:relative;min-width:32vw;height:65vh;
+  border-radius:20px;padding:48px 40px;cursor:default;flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.4);background:transparent;
+  transition:background .35s ease,border-color .35s ease;
+  display:flex;align-items:center;justify-content:center;
 }
-.pillar-card .card-front,.pillar-card .card-back{
-  position:absolute;top:48px;left:40px;right:40px;
-  transition:opacity .35s ease,transform .35s ease;
+.pillar-card:hover{background:#fff;border-color:transparent}
+.card-inner{text-align:center}
+.card-title{
+  font-family:var(--font-display);font-size:clamp(24px,3vw,36px);
+  font-weight:700;color:#fff;transition:color .35s ease;margin:0 0 16px 0;
 }
-.pillar-card .card-front h3{
-  font-family:var(--font-display);font-size:clamp(1.4rem,2.2vw,1.8rem);
-  font-weight:600;letter-spacing:-.02em;color:var(--text);
+.pillar-card:hover .card-title{color:#1a1a1a}
+.card-desc{
+  opacity:0;transform:translateY(12px);
+  transition:opacity .35s ease .05s,transform .35s ease .05s;
+  font-size:15px;line-height:1.6;color:#444;margin:0;max-width:35ch;
 }
-.pillar-card .card-back{opacity:0;transform:translateY(12px)}
-.pillar-card .card-back p{font-size:.9rem;color:var(--muted);line-height:1.7;max-width:35ch}
-.pillar-card:hover .card-front{opacity:0;transform:translateY(-12px)}
-.pillar-card:hover .card-back{opacity:1;transform:translateY(0)}
+.pillar-card:hover .card-desc{opacity:1;transform:translateY(0)}
 .card-tag{
   position:absolute;bottom:32px;left:40px;
-  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#999;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);transition:color .35s ease;
 }
+.pillar-card:hover .card-tag{color:#999}
 .card-number{
-  position:absolute;bottom:40px;right:40px;
-  font-family:var(--font-display);font-size:80px;font-weight:700;
-  color:rgba(0,0,0,.06);line-height:1;
+  position:absolute;bottom:32px;right:40px;
+  font-family:var(--font-display);font-size:72px;font-weight:700;
+  line-height:1;color:rgba(255,255,255,.1);transition:color .35s ease;
 }
+.pillar-card:hover .card-number{color:rgba(0,0,0,.06)}
 @media(max-width:768px){
   .pillars-scroll-container{height:auto}
   .pillars-sticky{position:relative;height:auto;padding:clamp(3rem,6vw,5rem) 5vw}
@@ -388,20 +394,6 @@ footer{
 /* ─── Divider ──────────────────────────────────────────────────── */
 .divider{width:100%;height:1px;background:var(--border)}
 
-/* ─── Marquee ──────────────────────────────────────────────────── */
-.marquee{
-  overflow:hidden;padding:clamp(1.5rem,3vw,2.5rem) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  position:relative;z-index:10;
-}
-.marquee-track{
-  display:flex;gap:clamp(2rem,4vw,4rem);animation:marquee 25s linear infinite;width:max-content;
-}
-.marquee-track span{
-  font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;
-  letter-spacing:-.02em;white-space:nowrap;color:var(--muted);
-}
-.marquee-track span em{font-style:normal;color:var(--coral)}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ─── Admin Panel ──────────────────────────────────────────────── */
 .admin-toggle{
@@ -499,23 +491,6 @@ footer{
   <div class="hero-scroll">Scroll<span></span></div>
 </section>
 
-<!-- Marquee -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span>Retail <em>&</em> Vending</span>
-    <span>Digitální řešení</span>
-    <span>Custom software</span>
-    <span>E-commerce</span>
-    <span>Maloobchod</span>
-    <span>Mobilní aplikace</span>
-    <span>Retail <em>&</em> Vending</span>
-    <span>Digitální řešení</span>
-    <span>Custom software</span>
-    <span>E-commerce</span>
-    <span>Maloobchod</span>
-    <span>Mobilní aplikace</span>
-  </div>
-</div>
 
 <!-- Pillars (horizontal sticky scroll) -->
 <div class="pillars-scroll-container" id="sluzby">
@@ -526,22 +501,28 @@ footer{
     </div>
     <div class="pillars-track" id="pillarsTrack">
       <div class="pillar-card">
+        <div class="card-inner">
+          <h3 class="card-title" id="svc3Title">Weby & Aplikace</h3>
+          <p class="card-desc" id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p>
+        </div>
+        <span class="card-tag">Digital</span>
         <span class="card-number">01</span>
-        <div class="card-front"><h3 id="svc1Title">Kamenné obchody</h3></div>
-        <div class="card-back"><p id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p></div>
-        <div class="card-tag">Maloobchod</div>
       </div>
       <div class="pillar-card">
+        <div class="card-inner">
+          <h3 class="card-title" id="svc2Title">Výdejní automaty</h3>
+          <p class="card-desc" id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p>
+        </div>
+        <span class="card-tag">Vending</span>
         <span class="card-number">02</span>
-        <div class="card-front"><h3 id="svc2Title">Výdejní automaty</h3></div>
-        <div class="card-back"><p id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p></div>
-        <div class="card-tag">Vending</div>
       </div>
       <div class="pillar-card">
+        <div class="card-inner">
+          <h3 class="card-title" id="svc1Title">Kamenné obchody</h3>
+          <p class="card-desc" id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p>
+        </div>
+        <span class="card-tag">Maloobchod</span>
         <span class="card-number">03</span>
-        <div class="card-front"><h3 id="svc3Title">Weby & Aplikace</h3></div>
-        <div class="card-back"><p id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p></div>
-        <div class="card-tag">Digital</div>
       </div>
     </div>
   </div>
