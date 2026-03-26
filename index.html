@@ -179,52 +179,46 @@ nav{
 nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
 
 /* ─── Pillars Horizontal Scroll ────────────────────────────────── */
-.pillars-scroll-container{height:300vh;position:relative}
+.pillars-scroll-container{height:400vh;position:relative}
 .pillars-sticky{
   position:sticky;top:0;height:100vh;overflow:hidden;
   background:var(--coral);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:0 5vw;
+  display:block;padding:0;
 }
-.pillars-header{margin-bottom:clamp(1.5rem,3vw,2.5rem)}
-.pillars-header .section-label{color:#fff;margin-bottom:1rem}
-.pillars-header .section-label::before{background:#fff}
-.pillars-header .section-title{color:#fff;margin-bottom:0}
 .pillars-track{
-  display:flex;gap:2vw;will-change:transform;
+  display:flex;height:100vh;will-change:transform;
 }
 .pillar-card{
-  position:relative;min-width:32vw;height:65vh;
-  border-radius:20px;padding:48px 40px;cursor:default;flex-shrink:0;
-  border:1.5px solid rgba(255,255,255,.4);background:transparent;
-  transition:background .35s ease,border-color .35s ease;
-  display:flex;align-items:center;justify-content:center;
+  position:relative;min-width:100vw;width:100vw;height:100vh;
+  border-radius:0;border:none;padding:0;cursor:default;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:transparent;transition:background .4s ease;
 }
-.pillar-card:hover{background:#fff;border-color:transparent}
-.card-inner{text-align:center}
+.pillar-card:hover{background:#fff}
+.card-inner{text-align:center;max-width:600px;padding:0 40px}
 .card-title{
-  font-family:var(--font-display);font-size:clamp(24px,3vw,36px);
-  font-weight:700;color:#fff;transition:color .35s ease;margin:0 0 16px 0;
+  font-family:var(--font-display);font-size:clamp(48px,8vw,96px);
+  font-weight:700;color:#fff;transition:color .4s ease;margin:0 0 24px 0;
 }
 .pillar-card:hover .card-title{color:#1a1a1a}
 .card-desc{
-  opacity:0;transform:translateY(12px);
-  transition:opacity .35s ease .05s,transform .35s ease .05s;
-  font-size:15px;line-height:1.6;color:#444;margin:0;max-width:35ch;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .4s ease .1s,transform .4s ease .1s;
+  font-size:18px;line-height:1.7;color:#444;margin:0;
 }
 .pillar-card:hover .card-desc{opacity:1;transform:translateY(0)}
 .card-tag{
-  position:absolute;bottom:32px;left:40px;
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,.6);transition:color .35s ease;
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);transition:color .4s ease;
 }
-.pillar-card:hover .card-tag{color:#999}
+.pillar-card:hover .card-tag{color:#bbb}
 .card-number{
-  position:absolute;bottom:32px;right:40px;
-  font-family:var(--font-display);font-size:72px;font-weight:700;
-  line-height:1;color:rgba(255,255,255,.1);transition:color .35s ease;
+  position:absolute;bottom:32px;right:48px;
+  font-family:var(--font-display);font-size:120px;font-weight:700;
+  line-height:1;color:rgba(255,255,255,.08);transition:color .4s ease;
 }
-.pillar-card:hover .card-number{color:rgba(0,0,0,.06)}
+.pillar-card:hover .card-number{color:rgba(0,0,0,.05)}
 @media(max-width:768px){
   .pillars-scroll-container{height:auto}
   .pillars-sticky{position:relative;height:auto;padding:clamp(3rem,6vw,5rem) 5vw}
@@ -495,10 +489,6 @@ footer{
 <!-- Pillars (horizontal sticky scroll) -->
 <div class="pillars-scroll-container" id="sluzby">
   <div class="pillars-sticky">
-    <div class="pillars-header">
-      <div class="section-label">Co děláme</div>
-      <div class="section-title">Tři pilíře vašeho podnikání</div>
-    </div>
     <div class="pillars-track" id="pillarsTrack">
       <div class="pillar-card">
         <div class="card-inner">
@@ -970,7 +960,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   window.addEventListener('scroll', () => {
     const rect = container.getBoundingClientRect();
     const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-    const maxShift = pTrack.scrollWidth - window.innerWidth + 160;
+    const maxShift = (pTrack.children.length - 1) * window.innerWidth;
     pTrack.style.transform = `translateX(${-progress * maxShift}px)`;
   });
 })();
