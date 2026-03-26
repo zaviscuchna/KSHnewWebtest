@@ -89,7 +89,7 @@ nav{
 /* ─── Hero ─────────────────────────────────────────────────────── */
 .hero{
   min-height:100vh;display:flex;flex-direction:column;justify-content:center;
-  align-items:center;text-align:center;
+  align-items:stretch;
   padding:clamp(2rem,5vw,6rem) clamp(1.5rem,5vw,4rem);
   position:relative;overflow:hidden;
   background:linear-gradient(160deg,#1a1816 0%,#0a0a0a 40%,#12100e 100%);color:#e8e8e8;
@@ -118,6 +118,60 @@ nav{
 }
 .hero-scroll::after{content:'';width:1px;height:60px;background:var(--muted);animation:scrollDown 2s ease infinite}
 @keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── Hero Layout ──────────────────────────────────────────────── */
+.hero-layout{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,4rem);
+  align-items:center;width:100%;max-width:1400px;margin:0 auto;
+}
+@media(max-width:768px){.hero-layout{grid-template-columns:1fr;text-align:center}}
+.hero-text-col{text-align:left}
+@media(max-width:768px){.hero-text-col{text-align:center;order:2}}
+.hero-logo-col{display:flex;justify-content:center;align-items:center}
+@media(max-width:768px){.hero-logo-col{order:1}}
+
+/* ─── Sticker Peel ─────────────────────────────────────────────── */
+.sticker-container{
+  position:relative;width:clamp(250px,22vw,380px);height:clamp(250px,22vw,380px);
+}
+.sticker-container *{user-select:none;-webkit-user-select:none}
+.sticker-under{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:700;
+  color:var(--coral);letter-spacing:-.04em;opacity:.4;
+}
+.sticker-main{
+  position:relative;width:100%;height:100%;
+  clip-path:polygon(-4% -4%,104% -4%,104% 104%,-4% 104%);
+  transition:clip-path .6s cubic-bezier(.25,.46,.45,.94);
+  filter:url(#dropShadow);border-radius:20px;overflow:hidden;
+}
+.sticker-canvas{width:100%;height:100%;display:block;border-radius:20px}
+.sticker-lighting{filter:url(#pointLight);width:100%;height:100%}
+.sticker-container:hover .sticker-main{
+  clip-path:polygon(-4% 34%,104% 34%,104% 104%,-4% 104%);
+}
+.sticker-container:active .sticker-main{
+  clip-path:polygon(-4% 44%,104% 44%,104% 104%,-4% 104%);
+}
+.flap{
+  position:absolute;width:100%;height:100%;left:0;
+  top:calc(-100% - 8%);
+  clip-path:polygon(-4% -4%,104% -4%,104% -4%,-4% -4%);
+  transform:scaleY(-1);transition:all .6s cubic-bezier(.25,.46,.45,.94);
+  border-radius:20px;overflow:hidden;
+}
+.flap-lighting{filter:url(#pointLightFlipped);width:100%;height:100%}
+.flap-back{width:100%;height:100%;background:rgb(60,58,56);border-radius:20px}
+.sticker-container:hover .flap{
+  clip-path:polygon(-4% -4%,104% -4%,104% 34%,-4% 34%);
+  top:calc(-100% + 68% - 1px);
+}
+.sticker-container:active .flap{
+  clip-path:polygon(-4% -4%,104% -4%,104% 44%,-4% 44%);
+  top:calc(-100% + 88% - 1px);
+}
 
 /* ─── Section Shared ───────────────────────────────────────────── */
 .section{padding:clamp(4rem,10vw,10rem) clamp(1.5rem,5vw,4rem)}
@@ -358,13 +412,46 @@ footer{
   </div>
 </nav>
 
+<!-- SVG Filters for sticker peel -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="pointLight"><feGaussianBlur stdDeviation="1" result="blur"/><feSpecularLighting result="spec" in="blur" specularExponent="100" specularConstant="0.21" lightingColor="white"><fePointLight id="pl" x="100" y="100" z="300"/></feSpecularLighting><feComposite in="spec" in2="SourceGraphic" result="lit"/><feComposite in="lit" in2="SourceAlpha" operator="in"/></filter>
+    <filter id="pointLightFlipped"><feGaussianBlur stdDeviation="10" result="blur"/><feSpecularLighting result="spec" in="blur" specularExponent="100" specularConstant="1.47" lightingColor="white"><fePointLight id="plFlipped" x="100" y="100" z="300"/></feSpecularLighting><feComposite in="spec" in2="SourceGraphic" result="lit"/><feComposite in="lit" in2="SourceAlpha" operator="in"/></filter>
+    <filter id="dropShadow"><feDropShadow dx="2" dy="4" stdDeviation="1.11" flood-color="black" flood-opacity="0.37"/></filter>
+    <filter id="expandAndFill"><feOffset dx="0" dy="0" in="SourceAlpha" result="shape"/><feFlood flood-color="rgb(179,179,179)" result="flood"/><feComposite operator="in" in="flood" in2="shape"/></filter>
+  </defs>
+</svg>
+
 <!-- Hero -->
 <section class="hero">
-  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:2rem">
-    <canvas id="metallicCanvas" style="width:clamp(180px,25vw,320px);height:clamp(180px,25vw,320px);border-radius:24px"></canvas>
-    <div class="hero-label reveal" style="justify-content:center">KSH Partners s.r.o.</div>
-    <h1 class="reveal reveal-delay-1" id="heroTitle" style="margin-left:auto;margin-right:auto">Partner pro <em>skutečný</em> růst</h1>
-    <p class="hero-sub reveal reveal-delay-2" id="heroSub" style="margin-left:auto;margin-right:auto">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
+  <div class="hero-layout">
+    <!-- Left: text -->
+    <div class="hero-text-col">
+      <div class="hero-label reveal">KSH Partners s.r.o.</div>
+      <h1 class="reveal reveal-delay-1" id="heroTitle">Partner pro <em>skutečný</em> růst</h1>
+      <p class="hero-sub reveal reveal-delay-2" id="heroSub">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
+    </div>
+    <!-- Right: sticker peel with metallic logo -->
+    <div class="hero-logo-col reveal reveal-delay-1">
+      <div class="sticker-container" id="stickerContainer">
+        <!-- Under sticker: KSH text -->
+        <div class="sticker-under">
+          <span>KSH</span>
+        </div>
+        <!-- Main sticker face -->
+        <div class="sticker-main">
+          <div class="sticker-lighting">
+            <canvas id="metallicCanvas" class="sticker-canvas"></canvas>
+          </div>
+        </div>
+        <!-- Flap (peeled back) -->
+        <div class="flap">
+          <div class="flap-lighting">
+            <div class="flap-back"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="hero-scroll">Scroll<span></span></div>
 </section>
@@ -786,6 +873,22 @@ void main(){
     })(performance.now());
   };
   img.src = 'logo-small.png';
+})();
+
+// ─── Sticker Peel Lighting ─────────────────────────────────────────
+(function() {
+  const sc = document.getElementById('stickerContainer');
+  const pl = document.getElementById('pl');
+  const plF = document.getElementById('plFlipped');
+  if (!sc || !pl) return;
+  sc.addEventListener('mousemove', e => {
+    const r = sc.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    pl.setAttribute('x', x); pl.setAttribute('y', y);
+    if (plF) { plF.setAttribute('x', x); plF.setAttribute('y', r.height - y); }
+  });
+  sc.addEventListener('touchstart', () => sc.classList.add('touch-active'));
+  sc.addEventListener('touchend', () => sc.classList.remove('touch-active'));
 })();
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
