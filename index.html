@@ -12,7 +12,7 @@
 /* ─── Reset & Base ─────────────────────────────────────────────── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 ::selection{background:#F07070;color:#0a0a0a}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 :root{
   --bg:#e8e4df;
@@ -173,6 +173,18 @@ nav{
 .hero-metallic-canvas{
   width:clamp(320px,40vw,650px);height:clamp(320px,40vw,650px);
   border-radius:28px;display:block;
+}
+
+/* ─── Hero Scroll Zoom ─────────────────────────────────────────── */
+.hero-logo-col{will-change:transform}
+
+/* ─── Horizontal Scroll Services ───────────────────────────────── */
+.services-scroll-wrap{overflow:hidden}
+.services-scroll-inner{
+  display:flex;gap:2px;width:max-content;
+}
+.services-scroll-inner .service-card{
+  width:clamp(320px,40vw,500px);min-height:420px;flex-shrink:0;
 }
 
 /* ─── Section Shared ───────────────────────────────────────────── */
@@ -466,22 +478,22 @@ footer{
   </div>
 </div>
 
-<!-- Services -->
-<section class="section" id="sluzby">
+<!-- Services (horizontal scroll) -->
+<section class="section services-scroll-wrap" id="sluzby">
   <div class="section-label reveal">Co děláme</div>
   <div class="section-title reveal reveal-delay-1">Tři pilíře vašeho podnikání</div>
-  <div class="services-grid">
-    <div class="service-card reveal" data-num="01">
+  <div class="services-scroll-inner" id="servicesTrack">
+    <div class="service-card" data-num="01">
       <h3 id="svc1Title">Kamenné obchody</h3>
       <p id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p>
       <span class="service-tag">Maloobchod</span>
     </div>
-    <div class="service-card reveal reveal-delay-1" data-num="02">
+    <div class="service-card" data-num="02">
       <h3 id="svc2Title">Výdejní automaty</h3>
       <p id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p>
       <span class="service-tag">Vending</span>
     </div>
-    <div class="service-card reveal reveal-delay-2" data-num="03">
+    <div class="service-card" data-num="03">
       <h3 id="svc3Title">Weby & Aplikace</h3>
       <p id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p>
       <span class="service-tag">Digital</span>
@@ -710,6 +722,8 @@ footer{
   </svg>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script type="module">
 // ─── Metallic Paint (WebGL2) ──────────────────────────────────────
 (function initMetallicPaint() {
@@ -882,6 +896,67 @@ void main(){
   sc.addEventListener('touchstart', () => sc.classList.add('touch-active'));
   sc.addEventListener('touchend', () => sc.classList.remove('touch-active'));
 })();
+
+// ─── GSAP ScrollTrigger ───────────────────────────────────────────
+if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Hero: text fades out, logo scales up on scroll
+  const heroTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: .8,
+      pin: false,
+    }
+  });
+  heroTl
+    .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
+    .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
+
+  // 2. Services: horizontal scroll (pinned)
+  const track = document.getElementById('servicesTrack');
+  if (track) {
+    const totalScroll = track.scrollWidth - window.innerWidth;
+    gsap.to(track, {
+      x: () => -totalScroll,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.services-scroll-wrap',
+        start: 'top top',
+        end: () => '+=' + totalScroll,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+  }
+
+  // 3. Numbers: count-up animation
+  document.querySelectorAll('.num').forEach(el => {
+    const target = el.textContent.trim();
+    const numMatch = target.match(/^(\d+)/);
+    if (numMatch) {
+      const end = parseInt(numMatch[1]);
+      const suffix = target.replace(/^\d+/, '');
+      el.textContent = '0' + suffix;
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          gsap.to({ val: 0 }, {
+            val: end, duration: 1.5, ease: 'power2.out',
+            onUpdate: function() { el.textContent = Math.round(this.targets()[0].val) + suffix; }
+          });
+        }
+      });
+    }
+  });
+}
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
