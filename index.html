@@ -15,13 +15,13 @@
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 :root{
-  --bg:#0a0a0a;
-  --surface:#111;
+  --bg:#e8e4df;
+  --surface:#f2efeb;
   --coral:#F07070;
-  --coral-dim:rgba(240,112,112,.15);
-  --text:#e8e8e8;
-  --muted:#666;
-  --border:rgba(255,255,255,.08);
+  --coral-dim:rgba(240,112,112,.12);
+  --text:#1a1a1a;
+  --muted:#7a7570;
+  --border:rgba(0,0,0,.08);
   --font-display:'Space Grotesk',sans-serif;
   --font-body:'Inter',sans-serif;
 }
@@ -55,41 +55,44 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:clamp(1rem,3vw,2rem) clamp(1.5rem,5vw,4rem);
   display:flex;align-items:center;justify-content:space-between;
-  mix-blend-mode:difference;
+  /* mix-blend-mode:difference; */
 }
-.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;color:#fff}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;color:var(--text)}
 .nav-links{display:flex;gap:clamp(1.5rem,3vw,3rem);align-items:center}
 .nav-links a{
   font-size:.8rem;font-weight:400;letter-spacing:.05em;text-transform:uppercase;
-  color:rgba(255,255,255,.6);transition:color .3s;
+  color:var(--muted);transition:color .3s;
 }
-.nav-links a:hover{color:#fff}
+.nav-links a:hover{color:var(--text)}
 .nav-cta{
-  font-size:.75rem;padding:.6rem 1.4rem;border:1px solid rgba(255,255,255,.3);
+  font-size:.75rem;padding:.6rem 1.4rem;border:1px solid var(--text);
   border-radius:100px;transition:all .3s cubic-bezier(.25,.46,.45,.94);
-  color:#fff;
+  color:var(--text);
 }
-.nav-cta:hover{background:#fff;color:#0a0a0a;border-color:#fff}
+.nav-cta:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
 
 .menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101}
 .menu-toggle span{width:24px;height:1.5px;background:#fff;transition:all .3s}
 
 @media(max-width:768px){
   .nav-links{
-    position:fixed;inset:0;background:rgba(10,10,10,.98);
+    position:fixed;inset:0;background:rgba(232,228,223,.98);
     flex-direction:column;justify-content:center;align-items:center;gap:2rem;
     opacity:0;pointer-events:none;transition:opacity .4s;
   }
   .nav-links.open{opacity:1;pointer-events:all}
-  .nav-links a{font-size:1.2rem;color:rgba(255,255,255,.8)}
+  .nav-links a{font-size:1.2rem;color:var(--muted)}
   .menu-toggle{display:flex}
+  .menu-toggle span{background:var(--text)}
 }
 
 /* ─── Hero ─────────────────────────────────────────────────────── */
 .hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;
   padding:clamp(2rem,5vw,6rem) clamp(1.5rem,5vw,4rem);
   position:relative;overflow:hidden;
+  background:#0a0a0a;color:#e8e8e8;
 }
 .hero-label{
   font-size:clamp(.65rem,1vw,.8rem);text-transform:uppercase;letter-spacing:.15em;
@@ -110,7 +113,7 @@ nav{
 .hero-scroll{
   position:absolute;right:clamp(1.5rem,5vw,4rem);bottom:clamp(2rem,5vw,4rem);
   writing-mode:vertical-rl;font-size:.7rem;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--muted);
+  text-transform:uppercase;color:rgba(255,255,255,.4);z-index:2;
   display:flex;align-items:center;gap:1rem;
 }
 .hero-scroll::after{content:'';width:1px;height:60px;background:var(--muted);animation:scrollDown 2s ease infinite}
@@ -148,11 +151,11 @@ nav{
   transition:background .4s;min-height:420px;
   display:flex;flex-direction:column;justify-content:flex-end;
 }
-.service-card:hover{background:#161616}
+.service-card:hover{background:#eae6e1}
 .service-card::before{
   content:attr(data-num);position:absolute;top:clamp(1.5rem,3vw,2.5rem);right:clamp(1.5rem,3vw,2.5rem);
   font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:700;
-  color:rgba(255,255,255,.03);line-height:1;
+  color:rgba(0,0,0,.04);line-height:1;
 }
 .service-card h3{
   font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2rem);
@@ -211,7 +214,7 @@ nav{
   background:var(--surface);padding:clamp(2rem,3vw,3rem);
   position:relative;overflow:hidden;transition:background .4s;
 }
-.ref-card:hover{background:#161616}
+.ref-card:hover{background:#eae6e1}
 .ref-card .ref-year{
   font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;
   color:var(--coral);margin-bottom:1rem;
@@ -252,15 +255,15 @@ nav{
 .contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--coral)}
 .contact-form textarea{min-height:120px;resize:vertical}
 .contact-form select{appearance:none;cursor:pointer}
-.contact-form select option{background:var(--bg)}
+.contact-form select option{background:var(--surface)}
 .contact-form button{
   align-self:flex-start;padding:.9rem 2.5rem;
-  background:var(--coral);color:var(--bg);border:none;
+  background:var(--text);color:var(--bg);border:none;
   font-family:var(--font-display);font-size:.85rem;font-weight:600;
   letter-spacing:.02em;border-radius:100px;cursor:pointer;
   transition:transform .3s cubic-bezier(.25,.46,.45,.94),box-shadow .3s;
 }
-.contact-form button:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,112,112,.25)}
+.contact-form button:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.15)}
 
 /* ─── Footer ───────────────────────────────────────────────────── */
 footer{
@@ -304,7 +307,7 @@ footer{
 
 .admin-panel{
   position:fixed;top:0;right:-480px;bottom:0;width:480px;max-width:90vw;z-index:300;
-  background:var(--bg);border-left:1px solid var(--border);
+  background:var(--surface);border-left:1px solid var(--border);
   transition:right .4s cubic-bezier(.25,.46,.45,.94);
   overflow-y:auto;padding:2rem;
 }
@@ -357,11 +360,11 @@ footer{
 
 <!-- Hero -->
 <section class="hero">
-  <div id="gridDistortion" style="position:absolute;inset:0;z-index:0;opacity:.35"></div>
+  <canvas id="metallicCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0"></canvas>
   <div style="position:relative;z-index:2">
-    <div class="hero-label reveal">KSH Partners s.r.o.</div>
-    <h1 class="reveal reveal-delay-1" id="heroTitle">Partner pro <em>skutečný</em> růst</h1>
-    <p class="hero-sub reveal reveal-delay-2" id="heroSub">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
+    <div class="hero-label reveal" style="justify-content:center">KSH Partners s.r.o.</div>
+    <h1 class="reveal reveal-delay-1" id="heroTitle" style="margin-left:auto;margin-right:auto">Partner pro <em>skutečný</em> růst</h1>
+    <p class="hero-sub reveal reveal-delay-2" id="heroSub" style="margin-left:auto;margin-right:auto">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
   </div>
   <div class="hero-scroll">Scroll<span></span></div>
 </section>
@@ -629,103 +632,160 @@ footer{
 </div>
 
 <script type="module">
-// ─── Grid Distortion (Three.js) ───────────────────────────────────
-(async function initGridDistortion() {
-  const container = document.getElementById('gridDistortion');
-  if (!container) return;
+// ─── Metallic Paint (WebGL2) ──────────────────────────────────────
+(function initMetallicPaint() {
+  const canvas = document.getElementById('metallicCanvas');
+  if (!canvas) return;
+  const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
+  if (!gl) return;
 
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-  const THREE = await import(THREE_URL);
+  const VS = `#version 300 es
+precision highp float;
+in vec2 a_position;
+out vec2 vP;
+void main(){vP=a_position*.5+.5;gl_Position=vec4(a_position,0.,1.);}`;
 
-  const vertexShader = `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `;
-  const fragmentShader = `
-    uniform sampler2D uDataTexture;
-    uniform sampler2D uTexture;
-    varying vec2 vUv;
-    void main() {
-      vec4 offset = texture2D(uDataTexture, vUv);
-      gl_FragColor = texture2D(uTexture, vUv - 0.02 * offset.rg);
-    }
-  `;
+  const FS = `#version 300 es
+precision highp float;
+in vec2 vP;out vec4 oC;
+uniform sampler2D u_tex;uniform float u_time,u_ratio,u_imgRatio,u_seed,u_scale,u_refract,u_blur,u_liquid;
+uniform float u_bright,u_contrast,u_angle,u_fresnel,u_sharp,u_wave,u_noise,u_chroma,u_distort,u_contour;
+uniform vec3 u_lightColor,u_darkColor,u_tint;
+vec3 sC,sM;
+vec3 pW(vec3 v){vec3 i=floor(v),f=fract(v),s=sign(fract(v*.5)-.5),h=fract(sM*i+i.yzx),c=f*(f-1.);return s*c*((h*16.-4.)*c-1.);}
+vec3 aF(vec3 b,vec3 c){return pW(b+c.zxy-pW(b.zxy+c.yzx)+pW(b.yzx+c.xyz));}
+vec3 lM(vec3 s,vec3 p){return(p+aF(s,p))*.5;}
+vec2 fA(){vec2 c=vP-.5;c.x*=u_ratio>u_imgRatio?u_ratio/u_imgRatio:1.;c.y*=u_ratio>u_imgRatio?1.:u_imgRatio/u_ratio;return vec2(c.x+.5,.5-c.y);}
+vec2 rot(vec2 p,float r){float c=cos(r),s=sin(r);return vec2(p.x*c+p.y*s,p.y*c-p.x*s);}
+float bM(vec2 c,float t){vec2 l=smoothstep(vec2(0.),vec2(t),c),u=smoothstep(vec2(0.),vec2(t),1.-c);return l.x*l.y*u.x*u.y;}
+float mG(float hi,float lo,float t,float sh,float cv){sh*=(2.-u_sharp);float ci=smoothstep(.15,.85,cv),r=lo;float e1=.08/u_scale;r=mix(r,hi,smoothstep(0.,sh*1.5,t));r=mix(r,lo,smoothstep(e1-sh,e1+sh,t));float e2=e1+.05/u_scale*(1.-ci*.35);r=mix(r,hi,smoothstep(e2-sh,e2+sh,t));float e3=e2+.025/u_scale*(1.-ci*.45);r=mix(r,lo,smoothstep(e3-sh,e3+sh,t));float e4=e1+.1/u_scale;r=mix(r,hi,smoothstep(e4-sh,e4+sh,t));float rm=1.-e4,gT=clamp((t-e4)/rm,0.,1.);r=mix(r,mix(hi,lo,smoothstep(0.,1.,gT)),smoothstep(e4-sh*.5,e4+sh*.5,t));return r;}
+void main(){
+  sC=fract(vec3(.7548,.5698,.4154)*(u_seed+17.31))+.5;sM=fract(sC.zxy-sC.yzx*1.618);
+  vec2 sc=vec2(vP.x*u_ratio,1.-vP.y);float aR=u_angle*3.14159/180.;sc=rot(sc-.5,aR)+.5;sc=clamp(sc,0.,1.);
+  float sl=sc.x-sc.y,an=u_time*.001;vec2 iC=fA();vec4 ts=texture(u_tex,iC);float dp=ts.r,sm=ts.a;
+  vec3 hi=u_lightColor*u_bright,lo=u_darkColor*(2.-u_bright);lo.b+=smoothstep(.6,1.4,sc.x+sc.y)*.08;
+  vec2 fC=sc-.5;float rd=length(fC+vec2(0.,sl*.15));vec2 ag=rot(fC,(.22-sl*.18)*3.14159);float cv=1.-pow(rd*1.65,1.15);cv*=pow(sc.y,.35);
+  float vs=sm;vs*=bM(iC,.01);float fr=pow(1.-cv,u_fresnel)*.3;vs=min(vs+fr*vs,1.);
+  float mT=an*.0625;vec3 wO=vec3(-1.05,1.35,1.55);vec3 wA=aF(vec3(31.,73.,56.),mT+wO)*.22*u_wave;vec3 wB=aF(vec3(24.,64.,42.),mT-wO.yzx)*.22*u_wave;
+  vec2 nC=sc*45.*u_noise;nC+=aF(sC.zxy,an*.17*sC.yzx-sc.yxy*.35).xy*18.*u_wave;
+  vec3 tC=vec3(.00041,.00053,.00076)*mT+wB*nC.x+wA*nC.y;tC=lM(sC,tC);tC=lM(sC+1.618,tC);float tb=sin(tC.x*3.14159)*.5+.5;tb=tb*2.-1.;
+  float nV=pW(vec3(sc*8.+an,an*.5)).x;float eF=smoothstep(0.,.5,dp)*smoothstep(1.,.5,dp);
+  float lD=dp+(1.-dp)*u_liquid*tb;lD+=nV*u_distort*.15*eF;float rB=clamp(1.-cv,0.,1.);
+  float fl=ag.x+sl;fl+=nV*sl*u_distort*eF;fl*=mix(1.,1.-dp*.5,u_contour);fl-=dp*u_contour*.8;
+  float eI=smoothstep(0.,1.,lD)*smoothstep(1.,0.,lD);fl-=tb*sl*1.8*eI;
+  float cA=cv*clamp(pow(sc.y,.12),.25,1.);fl*=.12+(1.05-lD)*cA;fl*=smoothstep(1.,.65,lD);
+  float vA1=smoothstep(.08,.18,sc.y)*smoothstep(.38,.18,sc.y);float vA2=smoothstep(.08,.18,1.-sc.y)*smoothstep(.38,.18,1.-sc.y);
+  fl+=vA1*.16+vA2*.025;fl*=.45+pow(sc.y,2.)*.55;fl*=u_scale;fl-=an;
+  float rO=rB+cv*tb*.025;float vM1=smoothstep(-.12,.18,sc.y)*smoothstep(.48,.08,sc.y);float cM1=smoothstep(.35,.55,cv)*smoothstep(.95,.35,cv);
+  rO+=vM1*cM1*4.5;rO-=sl;float bO=rB*1.25;float vM2=smoothstep(-.02,.35,sc.y)*smoothstep(.75,.08,sc.y);float cM2=smoothstep(.35,.55,cv)*smoothstep(.75,.35,cv);
+  bO+=vM2*cM2*.9;bO-=lD*.18;rO*=u_refract*u_chroma;bO*=u_refract*u_chroma;float sf=u_blur;
+  float rP=fract(fl+rO);float rC=mG(hi.r,lo.r,rP,sf+.018+u_refract*cv*.025,cv);
+  float gP=fract(fl);float gC=mG(hi.g,lo.g,gP,sf+.008/max(.01,1.-sl),cv);
+  float bP=fract(fl-bO);float bC=mG(hi.b,lo.b,bP,sf+.008,cv);
+  vec3 col=vec3(rC,gC,bC);col=(col-.5)*u_contrast+.5;col=clamp(col,0.,1.);
+  col=mix(col,1.-min(vec3(1.),(1.-col)/max(u_tint,vec3(.001))),length(u_tint-1.)*.5);col=clamp(col,0.,1.);
+  oC=vec4(col*vs,vs);
+}`;
 
-  const GRID = 15, MOUSE_R = 0.25, STRENGTH = 0.15, RELAX = 0.9;
+  function compileShader(src, type) {
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(VS, gl.VERTEX_SHADER));
+  gl.attachShader(prog, compileShader(FS, gl.FRAGMENT_SHADER));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) console.error(gl.getProgramInfoLog(prog));
 
-  const scene = new THREE.Scene();
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
+  const U = {};
+  for (let i = 0; i < gl.getProgramParameter(prog, gl.ACTIVE_UNIFORMS); i++) {
+    const info = gl.getActiveUniform(prog, i);
+    if (info) U[info.name] = gl.getUniformLocation(prog, info.name);
+  }
 
-  const camera = new THREE.OrthographicCamera(0, 0, 0, 0, -1000, 1000);
-  camera.position.z = 2;
-
-  const data = new Float32Array(4 * GRID * GRID);
-  const dataTexture = new THREE.DataTexture(data, GRID, GRID, THREE.RGBAFormat, THREE.FloatType);
-  dataTexture.needsUpdate = true;
-
-  const uniforms = {
-    uTexture: { value: null },
-    uDataTexture: { value: dataTexture },
-    resolution: { value: new THREE.Vector4() }
-  };
-
-  const material = new THREE.ShaderMaterial({ side: THREE.DoubleSide, uniforms, vertexShader, fragmentShader, transparent: true });
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, GRID - 1, GRID - 1), material);
-  scene.add(plane);
-
-  new THREE.TextureLoader().load('logo-hero.png', tex => {
-    tex.minFilter = THREE.LinearFilter;
-    tex.magFilter = THREE.LinearFilter;
-    uniforms.uTexture.value = tex;
-    resize();
-  });
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  gl.useProgram(prog);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
   function resize() {
-    const { width, height } = container.getBoundingClientRect();
-    if (!width || !height) return;
-    renderer.setSize(width, height);
-    const aspect = width / height;
-    plane.scale.set(aspect, 1, 1);
-    camera.left = -aspect / 2; camera.right = aspect / 2;
-    camera.top = .5; camera.bottom = -.5;
-    camera.updateProjectionMatrix();
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform1f(U.u_ratio, canvas.width / canvas.height);
   }
-  new ResizeObserver(resize).observe(container);
-  resize();
+  window.addEventListener('resize', resize);
 
-  const ms = { x: 0, y: 0, px: 0, py: 0, vx: 0, vy: 0 };
-  // Listen on hero section so mouse works over text too
-  const heroSection = container.closest('.hero') || container;
-  heroSection.addEventListener('mousemove', e => {
-    const r = container.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width, y = 1 - (e.clientY - r.top) / r.height;
-    ms.vx = x - ms.px; ms.vy = y - ms.py;
-    ms.x = x; ms.y = y; ms.px = x; ms.py = y;
-  });
+  function hex(h) { const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h); return r ? [parseInt(r[1],16)/255, parseInt(r[2],16)/255, parseInt(r[3],16)/255] : [1,1,1]; }
 
-  (function loop() {
-    requestAnimationFrame(loop);
-    const d = dataTexture.image.data;
-    for (let i = 0; i < GRID * GRID; i++) { d[i * 4] *= RELAX; d[i * 4 + 1] *= RELAX; }
-    const gx = GRID * ms.x, gy = GRID * ms.y, maxD = GRID * MOUSE_R;
-    for (let i = 0; i < GRID; i++) for (let j = 0; j < GRID; j++) {
-      const dist = Math.sqrt((gx - i) ** 2 + (gy - j) ** 2);
-      if (dist < maxD) {
-        const idx = 4 * (i + GRID * j), pow = Math.min(maxD / dist, 10);
-        d[idx] += STRENGTH * 100 * ms.vx * pow;
-        d[idx + 1] -= STRENGTH * 100 * ms.vy * pow;
-      }
+  function setUniforms() {
+    gl.uniform1f(U.u_seed, 42); gl.uniform1f(U.u_scale, 4); gl.uniform1f(U.u_refract, .01);
+    gl.uniform1f(U.u_blur, .015); gl.uniform1f(U.u_liquid, .51); gl.uniform1f(U.u_bright, 2);
+    gl.uniform1f(U.u_contrast, .5); gl.uniform1f(U.u_angle, 0); gl.uniform1f(U.u_fresnel, 1);
+    gl.uniform1f(U.u_sharp, 1); gl.uniform1f(U.u_wave, 1); gl.uniform1f(U.u_noise, .5);
+    gl.uniform1f(U.u_chroma, 1.4); gl.uniform1f(U.u_distort, 1); gl.uniform1f(U.u_contour, .2);
+    const lc = hex('#FF7F7F'), dc = hex('#000000'), tc = hex('#FFFFFF');
+    gl.uniform3f(U.u_lightColor, lc[0], lc[1], lc[2]);
+    gl.uniform3f(U.u_darkColor, dc[0], dc[1], dc[2]);
+    gl.uniform3f(U.u_tint, tc[0], tc[1], tc[2]);
+  }
+
+  // Process image → depth map via Poisson solver
+  function processImage(img) {
+    const MAX = 800; let w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    if (w > MAX || h > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
+    const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    const cx = cv.getContext('2d'); cx.drawImage(img, 0, 0, w, h);
+    const id = cx.getImageData(0, 0, w, h), d = id.data, sz = w * h;
+    const alpha = new Float32Array(sz), shape = new Uint8Array(sz), bound = new Uint8Array(sz);
+    for (let i = 0; i < sz; i++) {
+      const x = i * 4, r = d[x], g = d[x+1], b = d[x+2], a = d[x+3];
+      alpha[i] = (r > 250 && g > 250 && b > 250 && a === 255) || a < 5 ? 0 : a / 255;
+      shape[i] = alpha[i] > .1 ? 1 : 0;
     }
-    ms.vx *= .9; ms.vy *= .9;
-    dataTexture.needsUpdate = true;
-    renderer.render(scene, camera);
-  })();
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = y * w + x; if (!shape[i]) continue;
+      if (x===0||x===w-1||y===0||y===h-1||!shape[i-1]||!shape[i+1]||!shape[i-w]||!shape[i+w]) bound[i] = 1;
+    }
+    const u = new Float32Array(sz);
+    for (let it = 0; it < 150; it++) for (let y = 1; y < h-1; y++) for (let x = 1; x < w-1; x++) {
+      const i = y*w+x; if (!shape[i]||bound[i]) continue;
+      const s = (shape[i+1]?u[i+1]:0)+(shape[i-1]?u[i-1]:0)+(shape[i+w]?u[i+w]:0)+(shape[i-w]?u[i-w]:0);
+      u[i] = 1.85*((0.01+s)/4)+(1-1.85)*u[i];
+    }
+    let mx = 0; for (let i = 0; i < sz; i++) if (u[i]>mx) mx=u[i]; if(!mx) mx=1;
+    const out = cx.createImageData(w, h);
+    for (let i = 0; i < sz; i++) { const p=i*4,dp=u[i]/mx,g=Math.round(255*(1-dp*dp)); out.data[p]=out.data[p+1]=out.data[p+2]=g; out.data[p+3]=Math.round(alpha[i]*255); }
+    return out;
+  }
+
+  const img = new Image(); img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const imgData = processImage(img);
+    const tex = gl.createTexture(); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imgData.width, imgData.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(imgData.data.buffer));
+    gl.uniform1i(U.u_tex, 0);
+    gl.uniform1f(U.u_imgRatio, imgData.width / imgData.height);
+    resize(); setUniforms();
+    let animTime = 0, lastT = performance.now();
+    (function render(t) {
+      requestAnimationFrame(render);
+      animTime += (t - lastT) * .63; lastT = t;
+      gl.uniform1f(U.u_time, animTime);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    })(performance.now());
+  };
+  img.src = 'logo-small.png';
 })();
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
