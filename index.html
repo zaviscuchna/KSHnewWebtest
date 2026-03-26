@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSH Partners — Retail. Vending. Digital.</title>
+<meta name="description" content="KSH Partners s.r.o. — Kamenné obchody, výdejní automaty a digitální řešení pro skutečný růst vašeho podnikání.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Base ─────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+::selection{background:#F07070;color:#0a0a0a}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+:root{
+  --bg:#0a0a0a;
+  --surface:#111;
+  --coral:#F07070;
+  --coral-dim:rgba(240,112,112,.15);
+  --text:#e8e8e8;
+  --muted:#666;
+  --border:rgba(255,255,255,.08);
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--font-body);font-weight:300;
+  line-height:1.6;overflow-x:hidden;
+  cursor:none;
+}
+
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ─── Custom Cursor ────────────────────────────────────────────── */
+.cursor-dot{
+  position:fixed;width:8px;height:8px;border-radius:50%;
+  background:var(--coral);pointer-events:none;z-index:9999;
+  transition:transform .1s;mix-blend-mode:difference;
+}
+.cursor-ring{
+  position:fixed;width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--coral);pointer-events:none;z-index:9998;
+  transition:width .3s cubic-bezier(.25,.46,.45,.94),height .3s cubic-bezier(.25,.46,.45,.94),border-color .3s;
+}
+.cursor-ring.hover{width:56px;height:56px;border-color:var(--text)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+/* ─── Navigation ───────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:clamp(1rem,3vw,2rem) clamp(1.5rem,5vw,4rem);
+  display:flex;align-items:center;justify-content:space-between;
+  mix-blend-mode:difference;
+}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;color:#fff}
+.nav-links{display:flex;gap:clamp(1.5rem,3vw,3rem);align-items:center}
+.nav-links a{
+  font-size:.8rem;font-weight:400;letter-spacing:.05em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);transition:color .3s;
+}
+.nav-links a:hover{color:#fff}
+.nav-cta{
+  font-size:.75rem;padding:.6rem 1.4rem;border:1px solid rgba(255,255,255,.3);
+  border-radius:100px;transition:all .3s cubic-bezier(.25,.46,.45,.94);
+  color:#fff;
+}
+.nav-cta:hover{background:#fff;color:#0a0a0a;border-color:#fff}
+
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:101}
+.menu-toggle span{width:24px;height:1.5px;background:#fff;transition:all .3s}
+
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;inset:0;background:rgba(10,10,10,.98);
+    flex-direction:column;justify-content:center;align-items:center;gap:2rem;
+    opacity:0;pointer-events:none;transition:opacity .4s;
+  }
+  .nav-links.open{opacity:1;pointer-events:all}
+  .nav-links a{font-size:1.2rem;color:rgba(255,255,255,.8)}
+  .menu-toggle{display:flex}
+}
+
+/* ─── Hero ─────────────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(2rem,5vw,6rem) clamp(1.5rem,5vw,4rem);
+  position:relative;overflow:hidden;
+}
+.hero-label{
+  font-size:clamp(.65rem,1vw,.8rem);text-transform:uppercase;letter-spacing:.15em;
+  color:var(--coral);font-weight:500;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-label::before{content:'';width:40px;height:1px;background:var(--coral)}
+.hero h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.8rem,8vw,8rem);line-height:.92;
+  letter-spacing:-.04em;max-width:14ch;margin-bottom:2rem;
+}
+.hero h1 em{font-style:normal;color:var(--coral)}
+.hero-sub{
+  font-size:clamp(.95rem,1.5vw,1.15rem);color:var(--muted);
+  max-width:50ch;line-height:1.7;margin-bottom:3rem;
+}
+.hero-scroll{
+  position:absolute;right:clamp(1.5rem,5vw,4rem);bottom:clamp(2rem,5vw,4rem);
+  writing-mode:vertical-rl;font-size:.7rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-scroll::after{content:'';width:1px;height:60px;background:var(--muted);animation:scrollDown 2s ease infinite}
+@keyframes scrollDown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── Section Shared ───────────────────────────────────────────── */
+.section{padding:clamp(4rem,10vw,10rem) clamp(1.5rem,5vw,4rem)}
+.section-label{
+  font-size:clamp(.6rem,.9vw,.75rem);text-transform:uppercase;letter-spacing:.15em;
+  color:var(--coral);font-weight:500;margin-bottom:2rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.section-label::before{content:'';width:30px;height:1px;background:var(--coral)}
+.section-title{
+  font-family:var(--font-display);font-weight:600;
+  font-size:clamp(2rem,5vw,4.5rem);line-height:1;
+  letter-spacing:-.03em;margin-bottom:clamp(2rem,5vw,4rem);
+  max-width:20ch;
+}
+
+/* ─── Reveal Animation ─────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ─── Services (Pilíře) ────────────────────────────────────────── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+@media(max-width:900px){.services-grid{grid-template-columns:1fr}}
+
+.service-card{
+  background:var(--surface);padding:clamp(2rem,4vw,3.5rem);
+  position:relative;overflow:hidden;
+  transition:background .4s;min-height:420px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.service-card:hover{background:#161616}
+.service-card::before{
+  content:attr(data-num);position:absolute;top:clamp(1.5rem,3vw,2.5rem);right:clamp(1.5rem,3vw,2.5rem);
+  font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:700;
+  color:rgba(255,255,255,.03);line-height:1;
+}
+.service-card h3{
+  font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2rem);
+  font-weight:600;letter-spacing:-.02em;margin-bottom:1rem;
+}
+.service-card p{
+  color:var(--muted);font-size:.9rem;line-height:1.7;max-width:35ch;
+}
+.service-tag{
+  display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;
+  padding:.35rem .8rem;border:1px solid var(--border);border-radius:100px;
+  color:var(--muted);margin-top:1.5rem;transition:all .3s;
+}
+.service-card:hover .service-tag{border-color:var(--coral);color:var(--coral)}
+
+/* ─── Numbers ──────────────────────────────────────────────────── */
+.numbers{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+@media(max-width:768px){.numbers{grid-template-columns:repeat(2,1fr)}}
+.number-item{
+  padding:clamp(2rem,4vw,3.5rem) clamp(1.5rem,3vw,2.5rem);
+  border-right:1px solid var(--border);
+}
+.number-item:last-child{border-right:none}
+@media(max-width:768px){.number-item:nth-child(2){border-right:none}}
+.number-item .num{
+  font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:700;letter-spacing:-.03em;color:var(--coral);line-height:1;
+  margin-bottom:.5rem;
+}
+.number-item .num-label{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* ─── About ────────────────────────────────────────────────────── */
+.about-content{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem);align-items:start}
+@media(max-width:768px){.about-content{grid-template-columns:1fr}}
+.about-text{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);line-height:1.8}
+.about-text strong{color:var(--text);font-weight:500}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.value-item{
+  padding:1.5rem;border:1px solid var(--border);border-radius:12px;
+  transition:border-color .3s;
+}
+.value-item:hover{border-color:var(--coral)}
+.value-item h4{
+  font-family:var(--font-display);font-size:1rem;font-weight:600;
+  margin-bottom:.5rem;letter-spacing:-.01em;
+}
+.value-item p{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* ─── References ───────────────────────────────────────────────── */
+.ref-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+@media(max-width:768px){.ref-grid{grid-template-columns:1fr}}
+.ref-card{
+  background:var(--surface);padding:clamp(2rem,3vw,3rem);
+  position:relative;overflow:hidden;transition:background .4s;
+}
+.ref-card:hover{background:#161616}
+.ref-card .ref-year{
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--coral);margin-bottom:1rem;
+}
+.ref-card h3{
+  font-family:var(--font-display);font-size:clamp(1.2rem,2vw,1.6rem);
+  font-weight:600;letter-spacing:-.02em;margin-bottom:.75rem;
+}
+.ref-card p{font-size:.85rem;color:var(--muted);line-height:1.6;max-width:45ch}
+.ref-card .ref-tech{
+  margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.4rem;
+}
+.ref-card .ref-tech span{
+  font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;
+  padding:.3rem .7rem;border:1px solid var(--border);border-radius:100px;
+  color:var(--muted);
+}
+
+/* ─── Contact ──────────────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem)}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+.contact-info{display:flex;flex-direction:column;gap:2.5rem}
+.contact-line{
+  font-family:var(--font-display);font-size:clamp(1.2rem,2vw,1.6rem);
+  font-weight:500;letter-spacing:-.01em;
+}
+.contact-line span{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-family:var(--font-body);font-weight:400;margin-bottom:.3rem}
+.contact-line a{transition:color .3s}
+.contact-line a:hover{color:var(--coral)}
+
+.contact-form{display:flex;flex-direction:column;gap:1.2rem}
+.contact-form input,.contact-form textarea,.contact-form select{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:1rem 1.2rem;font-family:var(--font-body);
+  font-size:.9rem;border-radius:8px;outline:none;
+  transition:border-color .3s;
+}
+.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--coral)}
+.contact-form textarea{min-height:120px;resize:vertical}
+.contact-form select{appearance:none;cursor:pointer}
+.contact-form select option{background:var(--bg)}
+.contact-form button{
+  align-self:flex-start;padding:.9rem 2.5rem;
+  background:var(--coral);color:var(--bg);border:none;
+  font-family:var(--font-display);font-size:.85rem;font-weight:600;
+  letter-spacing:.02em;border-radius:100px;cursor:pointer;
+  transition:transform .3s cubic-bezier(.25,.46,.45,.94),box-shadow .3s;
+}
+.contact-form button:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,112,112,.25)}
+
+/* ─── Footer ───────────────────────────────────────────────────── */
+footer{
+  padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem);
+  border-top:1px solid var(--border);
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem;
+}
+.footer-left{max-width:400px}
+.footer-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;margin-bottom:.5rem}
+.footer-legal{font-size:.75rem;color:var(--muted);line-height:1.7}
+.footer-right{display:flex;gap:2rem;font-size:.75rem;color:var(--muted)}
+.footer-right a{transition:color .3s}
+.footer-right a:hover{color:var(--coral)}
+
+/* ─── Divider ──────────────────────────────────────────────────── */
+.divider{width:100%;height:1px;background:var(--border)}
+
+/* ─── Marquee ──────────────────────────────────────────────────── */
+.marquee{
+  overflow:hidden;padding:clamp(1.5rem,3vw,2.5rem) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.marquee-track{
+  display:flex;gap:clamp(2rem,4vw,4rem);animation:marquee 25s linear infinite;width:max-content;
+}
+.marquee-track span{
+  font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;
+  letter-spacing:-.02em;white-space:nowrap;color:var(--muted);
+}
+.marquee-track span em{font-style:normal;color:var(--coral)}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── Admin Panel ──────────────────────────────────────────────── */
+.admin-toggle{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+  width:44px;height:44px;border-radius:50%;background:var(--surface);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;opacity:.3;
+}
+.admin-toggle:hover{opacity:1;border-color:var(--coral)}
+.admin-toggle svg{width:18px;height:18px;stroke:var(--muted)}
+
+.admin-panel{
+  position:fixed;top:0;right:-480px;bottom:0;width:480px;max-width:90vw;z-index:300;
+  background:var(--bg);border-left:1px solid var(--border);
+  transition:right .4s cubic-bezier(.25,.46,.45,.94);
+  overflow-y:auto;padding:2rem;
+}
+.admin-panel.open{right:0}
+.admin-panel h2{
+  font-family:var(--font-display);font-size:1.3rem;font-weight:600;
+  margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;
+}
+.admin-panel h2 button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.5rem}
+.admin-group{margin-bottom:2rem}
+.admin-group label{
+  display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--coral);margin-bottom:.4rem;font-weight:500;
+}
+.admin-group input,.admin-group textarea{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:.7rem 1rem;font-family:var(--font-body);
+  font-size:.85rem;border-radius:6px;outline:none;
+}
+.admin-group textarea{min-height:80px;resize:vertical}
+.admin-save{
+  padding:.7rem 2rem;background:var(--coral);color:var(--bg);border:none;
+  font-family:var(--font-display);font-size:.8rem;font-weight:600;
+  border-radius:100px;cursor:pointer;transition:transform .2s;
+}
+.admin-save:hover{transform:scale(1.03)}
+.admin-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:299;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.admin-overlay.open{opacity:1;pointer-events:all}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">KSH</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#sluzby">Služby</a>
+    <a href="#cisla">O nás</a>
+    <a href="#reference">Reference</a>
+    <a href="#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+  <div class="menu-toggle" id="menuToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-label reveal">KSH Partners s.r.o.</div>
+  <h1 class="reveal reveal-delay-1" id="heroTitle">Partner pro <em>skutečný</em> růst</h1>
+  <p class="hero-sub reveal reveal-delay-2" id="heroSub">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
+  <div class="hero-scroll">Scroll<span></span></div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Retail <em>&</em> Vending</span>
+    <span>Digitální řešení</span>
+    <span>Custom software</span>
+    <span>E-commerce</span>
+    <span>Maloobchod</span>
+    <span>Mobilní aplikace</span>
+    <span>Retail <em>&</em> Vending</span>
+    <span>Digitální řešení</span>
+    <span>Custom software</span>
+    <span>E-commerce</span>
+    <span>Maloobchod</span>
+    <span>Mobilní aplikace</span>
+  </div>
+</div>
+
+<!-- Services -->
+<section class="section" id="sluzby">
+  <div class="section-label reveal">Co děláme</div>
+  <div class="section-title reveal reveal-delay-1">Tři pilíře vašeho podnikání</div>
+  <div class="services-grid">
+    <div class="service-card reveal" data-num="01">
+      <h3 id="svc1Title">Kamenné obchody</h3>
+      <p id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p>
+      <span class="service-tag">Maloobchod</span>
+    </div>
+    <div class="service-card reveal reveal-delay-1" data-num="02">
+      <h3 id="svc2Title">Výdejní automaty</h3>
+      <p id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p>
+      <span class="service-tag">Vending</span>
+    </div>
+    <div class="service-card reveal reveal-delay-2" data-num="03">
+      <h3 id="svc3Title">Weby & Aplikace</h3>
+      <p id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p>
+      <span class="service-tag">Digital</span>
+    </div>
+  </div>
+</section>
+
+<!-- Numbers -->
+<div class="numbers" id="cisla">
+  <div class="number-item reveal">
+    <div class="num" id="num1">2</div>
+    <div class="num-label" id="numLabel1">Vlastní prodejny<br>v provozu</div>
+  </div>
+  <div class="number-item reveal reveal-delay-1">
+    <div class="num" id="num2">24/7</div>
+    <div class="num-label" id="numLabel2">Vending automaty<br>vždy dostupné</div>
+  </div>
+  <div class="number-item reveal reveal-delay-2">
+    <div class="num" id="num3">6+</div>
+    <div class="num-label" id="numLabel3">Dokončených<br>digitálních projektů</div>
+  </div>
+  <div class="number-item reveal reveal-delay-3">
+    <div class="num" id="num4">4</div>
+    <div class="num-label" id="numLabel4">Partneři v<br>core týmu</div>
+  </div>
+</div>
+
+<!-- About -->
+<section class="section">
+  <div class="section-label reveal">O nás</div>
+  <div class="section-title reveal reveal-delay-1">Děláme věci jinak</div>
+  <div class="about-content">
+    <div class="about-text reveal" id="aboutText">
+      Jsme čtyři partneři, kteří spojili zkušenosti z retailu, technologií a podnikání. <strong>Neděláme kompromisy</strong> — každý projekt bereme jako vlastní. Působíme z jižních Čech, pracujeme po celé ČR.<br><br>
+      Věříme, že budoucnost obchodu je v propojení fyzického a digitálního světa. Proto stavíme prodejny, instalujeme automaty a vyvíjíme software — vše pod jednou střechou.
+    </div>
+    <div class="about-values">
+      <div class="value-item reveal">
+        <h4>Výsledky</h4>
+        <p>Nezajímá nás proces, zajímá nás dopad. Měříme úspěch v reálných číslech.</p>
+      </div>
+      <div class="value-item reveal reveal-delay-1">
+        <h4>Férovost</h4>
+        <p>Transparentní podmínky, žádné skryté poplatky. Co řekneme, to platí.</p>
+      </div>
+      <div class="value-item reveal reveal-delay-2">
+        <h4>Rychlost</h4>
+        <p>Od nápadu k realizaci v týdnech, ne měsících. Iterujeme a zlepšujeme za pochodu.</p>
+      </div>
+      <div class="value-item reveal reveal-delay-3">
+        <h4>Inovace</h4>
+        <p>Hledáme nové cesty. Automatizace, data, AI — používáme to, co funguje.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- References -->
+<section class="section" id="reference">
+  <div class="section-label reveal">Reference</div>
+  <div class="section-title reveal reveal-delay-1">Vybrané projekty</div>
+  <div class="ref-grid">
+    <div class="ref-card reveal">
+      <div class="ref-year">2025 — současnost</div>
+      <h3>KraKrám</h3>
+      <p>Dvě vlastní prodejny v provozu. Kompletní řetězec od nákupu přes aranžování po zákaznický servis.</p>
+      <div class="ref-tech"><span>Retail</span><span>POS</span><span>Provoz</span></div>
+    </div>
+    <div class="ref-card reveal reveal-delay-1">
+      <div class="ref-year">2025</div>
+      <h3>Rezervační systém — Lyžařská škola</h3>
+      <p>Webový rezervační systém pro lyžařskou školu. Kalendář, kapacity, automatické potvrzení.</p>
+      <div class="ref-tech"><span>Flask</span><span>SQLite</span><span>Python</span></div>
+    </div>
+    <div class="ref-card reveal">
+      <div class="ref-year">2025</div>
+      <h3>Autocamp — Správa parcel</h3>
+      <p>Systém pro správu autocampu — obsazenost parcel, interaktivní mapa, manažerský dashboard.</p>
+      <div class="ref-tech"><span>Next.js</span><span>Dashboard</span><span>Maps</span></div>
+    </div>
+    <div class="ref-card reveal reveal-delay-1">
+      <div class="ref-year">2025</div>
+      <h3>E-commerce s platební bránou</h3>
+      <p>Plnohodnotný e-shop s integrací Stripe/GoPay, správou objednávek a automatickými notifikacemi.</p>
+      <div class="ref-tech"><span>Next.js</span><span>Stripe</span><span>Tailwind</span></div>
+    </div>
+    <div class="ref-card reveal">
+      <div class="ref-year">2026</div>
+      <h3>Web specializované prodejny</h3>
+      <p>Prezentační web optimalizovaný na SEO a konverze. Responzivní design, compliance s legislativou.</p>
+      <div class="ref-tech"><span>Next.js</span><span>SEO</span><span>Tailwind</span></div>
+    </div>
+    <div class="ref-card reveal reveal-delay-1">
+      <div class="ref-year">2026</div>
+      <h3>Mobilní aplikace</h3>
+      <p>Cross-platform mobilní aplikace pro iOS a Android. Push notifikace, offline režim, synchronizace dat.</p>
+      <div class="ref-tech"><span>React Native</span><span>iOS</span><span>Android</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section" id="kontakt">
+  <div class="section-label reveal">Kontakt</div>
+  <div class="section-title reveal reveal-delay-1">Pojďme to rozjet</div>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-line">
+        <span>Email</span>
+        <a href="mailto:info@ksh-partners.cz">info@ksh-partners.cz</a>
+      </div>
+      <div class="contact-line">
+        <span>Telefon</span>
+        <a href="tel:+420774982675">+420 774 982 675</a>
+      </div>
+      <div class="contact-line">
+        <span>Působnost</span>
+        Jižní Čechy — online po celé ČR
+      </div>
+      <div class="contact-line">
+        <span>Odpovídáme</span>
+        Do 24 hodin
+      </div>
+    </div>
+    <form class="contact-form reveal reveal-delay-1" onsubmit="event.preventDefault();alert('Zpráva odeslána! (demo)')">
+      <input type="text" placeholder="Jméno" required>
+      <input type="text" placeholder="Firma (nepovinné)">
+      <input type="email" placeholder="E-mail" required>
+      <select>
+        <option value="" disabled selected>Oblast zájmu</option>
+        <option>Kamenný obchod</option>
+        <option>Výdejní automaty</option>
+        <option>Web / Aplikace</option>
+        <option>Jiné</option>
+      </select>
+      <textarea placeholder="Vaše zpráva…" required></textarea>
+      <button type="submit">Odeslat zprávu</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-logo">KSH Partners</div>
+    <div class="footer-legal">
+      KSH Partners s.r.o. · IČO 19985681<br>
+      Jihovýchodní II 887/28, 141 00 Praha 10<br>
+      &copy; 2026 Všechna práva vyhrazena
+    </div>
+  </div>
+  <div class="footer-right">
+    <a href="https://ksh-partners.cz" target="_blank">Aktuální web</a>
+    <a href="mailto:info@ksh-partners.cz">Email</a>
+    <a href="tel:+420774982675">Telefon</a>
+  </div>
+</footer>
+
+<!-- Admin Panel -->
+<div class="admin-overlay" id="adminOverlay" onclick="toggleAdmin()"></div>
+<div class="admin-panel" id="adminPanel">
+  <h2>Editor obsahu <button onclick="toggleAdmin()">&times;</button></h2>
+  <div class="admin-group">
+    <label>Hero nadpis (použij &lt;em&gt; pro coral)</label>
+    <input id="editHeroTitle" oninput="liveEdit('heroTitle',this.value)">
+  </div>
+  <div class="admin-group">
+    <label>Hero popisek</label>
+    <textarea id="editHeroSub" oninput="liveEdit('heroSub',this.value)"></textarea>
+  </div>
+  <div class="admin-group">
+    <label>Služba 1 — název</label>
+    <input id="editSvc1Title" oninput="liveEdit('svc1Title',this.value)">
+  </div>
+  <div class="admin-group">
+    <label>Služba 1 — popis</label>
+    <textarea id="editSvc1Desc" oninput="liveEdit('svc1Desc',this.value)"></textarea>
+  </div>
+  <div class="admin-group">
+    <label>Služba 2 — název</label>
+    <input id="editSvc2Title" oninput="liveEdit('svc2Title',this.value)">
+  </div>
+  <div class="admin-group">
+    <label>Služba 2 — popis</label>
+    <textarea id="editSvc2Desc" oninput="liveEdit('svc2Desc',this.value)"></textarea>
+  </div>
+  <div class="admin-group">
+    <label>Služba 3 — název</label>
+    <input id="editSvc3Title" oninput="liveEdit('svc3Title',this.value)">
+  </div>
+  <div class="admin-group">
+    <label>Služba 3 — popis</label>
+    <textarea id="editSvc3Desc" oninput="liveEdit('svc3Desc',this.value)"></textarea>
+  </div>
+  <div class="admin-group">
+    <label>O nás text</label>
+    <textarea id="editAboutText" oninput="liveEdit('aboutText',this.value)" style="min-height:120px"></textarea>
+  </div>
+  <div class="admin-group">
+    <label>Číslo 1</label>
+    <input id="editNum1" oninput="liveEdit('num1',this.value)" style="width:30%;display:inline-block;margin-right:4%">
+    <input id="editNumLabel1" oninput="liveEdit('numLabel1',this.value)" style="width:66%;display:inline-block">
+  </div>
+  <div class="admin-group">
+    <label>Číslo 2</label>
+    <input id="editNum2" oninput="liveEdit('num2',this.value)" style="width:30%;display:inline-block;margin-right:4%">
+    <input id="editNumLabel2" oninput="liveEdit('numLabel2',this.value)" style="width:66%;display:inline-block">
+  </div>
+  <div class="admin-group">
+    <label>Číslo 3</label>
+    <input id="editNum3" oninput="liveEdit('num3',this.value)" style="width:30%;display:inline-block;margin-right:4%">
+    <input id="editNumLabel3" oninput="liveEdit('numLabel3',this.value)" style="width:66%;display:inline-block">
+  </div>
+  <div class="admin-group">
+    <label>Číslo 4</label>
+    <input id="editNum4" oninput="liveEdit('num4',this.value)" style="width:30%;display:inline-block;margin-right:4%">
+    <input id="editNumLabel4" oninput="liveEdit('numLabel4',this.value)" style="width:66%;display:inline-block">
+  </div>
+  <button class="admin-save" onclick="saveEdits()">Uložit změny</button>
+  <p style="font-size:.7rem;color:var(--muted);margin-top:.8rem">Změny se ukládají do localStorage prohlížeče.</p>
+</div>
+
+<div class="admin-toggle" onclick="toggleAdmin()" title="Editor obsahu">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+  </svg>
+</div>
+
+<script>
+// ─── Custom Cursor ────────────────────────────────────────────────
+const dot = document.getElementById('cursorDot')
+const ring = document.getElementById('cursorRing')
+let mx = 0, my = 0, rx = 0, ry = 0
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY })
+
+function animateCursor() {
+  rx += (mx - rx) * .15
+  ry += (my - ry) * .15
+  dot.style.left = mx - 4 + 'px'
+  dot.style.top = my - 4 + 'px'
+  ring.style.left = rx - 18 + 'px'
+  ring.style.top = ry - 18 + 'px'
+  requestAnimationFrame(animateCursor)
+}
+animateCursor()
+
+document.querySelectorAll('a, button, .service-card, .ref-card, .value-item, .admin-toggle').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'))
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'))
+})
+
+// ─── Scroll Reveal ────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target) } })
+}, { threshold: .15, rootMargin: '0px 0px -50px 0px' })
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+
+// ─── Mobile nav close on link click ──────────────────────────────
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+})
+
+// ─── Admin Panel ──────────────────────────────────────────────────
+const EDITABLE = [
+  'heroTitle','heroSub',
+  'svc1Title','svc1Desc','svc2Title','svc2Desc','svc3Title','svc3Desc',
+  'aboutText',
+  'num1','numLabel1','num2','numLabel2','num3','numLabel3','num4','numLabel4',
+]
+
+function toggleAdmin() {
+  const panel = document.getElementById('adminPanel')
+  const overlay = document.getElementById('adminOverlay')
+  const isOpen = panel.classList.contains('open')
+  panel.classList.toggle('open')
+  overlay.classList.toggle('open')
+  if (!isOpen) loadEdits()
+}
+
+function loadEdits() {
+  EDITABLE.forEach(id => {
+    const el = document.getElementById(id)
+    const input = document.getElementById('edit' + id.charAt(0).toUpperCase() + id.slice(1))
+    if (el && input) {
+      input.value = el.innerHTML.replace(/<br\s*\/?>/g, '\n')
+    }
+  })
+}
+
+function liveEdit(id, value) {
+  const el = document.getElementById(id)
+  if (el) el.innerHTML = value.replace(/\n/g, '<br>')
+}
+
+function saveEdits() {
+  const data = {}
+  EDITABLE.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) data[id] = el.innerHTML
+  })
+  localStorage.setItem('ksh_edits', JSON.stringify(data))
+  alert('Uloženo!')
+}
+
+// Restore on load
+(function restoreEdits() {
+  try {
+    const data = JSON.parse(localStorage.getItem('ksh_edits'))
+    if (!data) return
+    Object.entries(data).forEach(([id, html]) => {
+      const el = document.getElementById(id)
+      if (el) el.innerHTML = html
+    })
+  } catch {}
+})()
+</script>
+</body>
+</html>
