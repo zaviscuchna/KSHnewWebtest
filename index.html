@@ -175,16 +175,55 @@ nav{
 /* ─── Hero Scroll Zoom ─────────────────────────────────────────── */
 .hero-logo-col{will-change:transform}
 
-/* ─── Horizontal Scroll Services ───────────────────────────────── */
-.services-scroll-wrap{overflow:hidden;background:var(--coral);}
-.services-scroll-wrap .section-label{color:#fff}
-.services-scroll-wrap .section-label::before{background:#fff}
-.services-scroll-wrap .section-title{color:#fff}
-.services-scroll-inner{
-  display:flex;gap:2px;width:max-content;
+/* ─── Nav Hidden ───────────────────────────────────────────────── */
+nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
+
+/* ─── Pillars Horizontal Scroll ────────────────────────────────── */
+.pillars-scroll-container{height:300vh;position:relative}
+.pillars-sticky{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  background:var(--coral);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 5vw;
 }
-.services-scroll-inner .service-card{
-  width:clamp(320px,40vw,500px);min-height:420px;flex-shrink:0;
+.pillars-header{margin-bottom:clamp(1.5rem,3vw,2.5rem)}
+.pillars-header .section-label{color:#fff;margin-bottom:1rem}
+.pillars-header .section-label::before{background:#fff}
+.pillars-header .section-title{color:#fff;margin-bottom:0}
+.pillars-track{
+  display:flex;gap:2vw;will-change:transform;
+}
+.pillar-card{
+  position:relative;min-width:30vw;height:60vh;
+  background:#f5f0eb;border-radius:16px;
+  padding:48px 40px;overflow:hidden;cursor:default;flex-shrink:0;
+}
+.pillar-card .card-front,.pillar-card .card-back{
+  position:absolute;top:48px;left:40px;right:40px;
+  transition:opacity .35s ease,transform .35s ease;
+}
+.pillar-card .card-front h3{
+  font-family:var(--font-display);font-size:clamp(1.4rem,2.2vw,1.8rem);
+  font-weight:600;letter-spacing:-.02em;color:var(--text);
+}
+.pillar-card .card-back{opacity:0;transform:translateY(12px)}
+.pillar-card .card-back p{font-size:.9rem;color:var(--muted);line-height:1.7;max-width:35ch}
+.pillar-card:hover .card-front{opacity:0;transform:translateY(-12px)}
+.pillar-card:hover .card-back{opacity:1;transform:translateY(0)}
+.card-tag{
+  position:absolute;bottom:32px;left:40px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#999;
+}
+.card-number{
+  position:absolute;bottom:40px;right:40px;
+  font-family:var(--font-display);font-size:80px;font-weight:700;
+  color:rgba(0,0,0,.06);line-height:1;
+}
+@media(max-width:768px){
+  .pillars-scroll-container{height:auto}
+  .pillars-sticky{position:relative;height:auto;padding:clamp(3rem,6vw,5rem) 5vw}
+  .pillars-track{flex-direction:column;gap:1rem}
+  .pillar-card{min-width:100%;height:auto;min-height:300px}
 }
 
 /* ─── Section Shared ───────────────────────────────────────────── */
@@ -478,28 +517,35 @@ footer{
   </div>
 </div>
 
-<!-- Services (horizontal scroll) -->
-<section class="section services-scroll-wrap" id="sluzby">
-  <div class="section-label reveal">Co děláme</div>
-  <div class="section-title reveal reveal-delay-1">Tři pilíře vašeho podnikání</div>
-  <div class="services-scroll-inner" id="servicesTrack">
-    <div class="service-card" data-num="01">
-      <h3 id="svc1Title">Kamenné obchody</h3>
-      <p id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p>
-      <span class="service-tag">Maloobchod</span>
+<!-- Pillars (horizontal sticky scroll) -->
+<div class="pillars-scroll-container" id="sluzby">
+  <div class="pillars-sticky">
+    <div class="pillars-header">
+      <div class="section-label">Co děláme</div>
+      <div class="section-title">Tři pilíře vašeho podnikání</div>
     </div>
-    <div class="service-card" data-num="02">
-      <h3 id="svc2Title">Výdejní automaty</h3>
-      <p id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p>
-      <span class="service-tag">Vending</span>
-    </div>
-    <div class="service-card" data-num="03">
-      <h3 id="svc3Title">Weby & Aplikace</h3>
-      <p id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p>
-      <span class="service-tag">Digital</span>
+    <div class="pillars-track" id="pillarsTrack">
+      <div class="pillar-card">
+        <span class="card-number">01</span>
+        <div class="card-front"><h3 id="svc1Title">Kamenné obchody</h3></div>
+        <div class="card-back"><p id="svc1Desc">Zakládáme a provozujeme vlastní maloobchodní prodejny. Od výběru lokace, přes vybavení až po optimalizaci zákaznické zkušenosti. Kompletní řešení pod jednou střechou.</p></div>
+        <div class="card-tag">Maloobchod</div>
+      </div>
+      <div class="pillar-card">
+        <span class="card-number">02</span>
+        <div class="card-front"><h3 id="svc2Title">Výdejní automaty</h3></div>
+        <div class="card-back"><p id="svc2Desc">Bezobslužný prodej 24/7 prostřednictvím moderních výdejních automatů. Strategické umístění, průběžný servis a telemetrický monitoring v reálném čase.</p></div>
+        <div class="card-tag">Vending</div>
+      </div>
+      <div class="pillar-card">
+        <span class="card-number">03</span>
+        <div class="card-front"><h3 id="svc3Title">Weby & Aplikace</h3></div>
+        <div class="card-back"><p id="svc3Desc">Navrhujeme a vyvíjíme weby, e-shopy a mobilní aplikace na míru. Od vizuálně výjimečných prezentací po komplexní systémy s platební bránou a vlastním backoffice.</p></div>
+        <div class="card-tag">Digital</div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- Numbers -->
 <div class="numbers" id="cisla">
@@ -901,24 +947,16 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
 
-  // 2. Services: horizontal scroll (pinned)
-  const track = document.getElementById('servicesTrack');
-  if (track) {
-    const totalScroll = track.scrollWidth - window.innerWidth;
-    gsap.to(track, {
-      x: () => -totalScroll,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.services-scroll-wrap',
-        start: 'top top',
-        end: () => '+=' + totalScroll,
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      }
-    });
-  }
+  // 2. Pillars: nav hiding via ScrollTrigger
+  ScrollTrigger.create({
+    trigger: '.pillars-scroll-container',
+    start: 'top 80px',
+    end: 'bottom top',
+    onEnter: () => document.querySelector('nav').classList.add('nav-hidden'),
+    onLeave: () => document.querySelector('nav').classList.remove('nav-hidden'),
+    onEnterBack: () => document.querySelector('nav').classList.add('nav-hidden'),
+    onLeaveBack: () => document.querySelector('nav').classList.remove('nav-hidden'),
+  });
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -942,6 +980,19 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     }
   });
 }
+
+// ─── Pillars Horizontal Scroll (vanilla) ──────────────────────────
+(function() {
+  const container = document.querySelector('.pillars-scroll-container');
+  const pTrack = document.querySelector('.pillars-track');
+  if (!container || !pTrack) return;
+  window.addEventListener('scroll', () => {
+    const rect = container.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
+    const maxShift = pTrack.scrollWidth - window.innerWidth + 160;
+    pTrack.style.transform = `translateX(${-progress * maxShift}px)`;
+  });
+})();
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
