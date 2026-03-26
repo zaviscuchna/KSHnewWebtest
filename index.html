@@ -92,7 +92,7 @@ nav{
   align-items:center;text-align:center;
   padding:clamp(2rem,5vw,6rem) clamp(1.5rem,5vw,4rem);
   position:relative;overflow:hidden;
-  background:#0a0a0a;color:#e8e8e8;
+  background:linear-gradient(160deg,#1a1816 0%,#0a0a0a 40%,#12100e 100%);color:#e8e8e8;
 }
 .hero-label{
   font-size:clamp(.65rem,1vw,.8rem);text-transform:uppercase;letter-spacing:.15em;
@@ -360,8 +360,8 @@ footer{
 
 <!-- Hero -->
 <section class="hero">
-  <canvas id="metallicCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0"></canvas>
-  <div style="position:relative;z-index:2">
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:2rem">
+    <canvas id="metallicCanvas" style="width:clamp(180px,25vw,320px);height:clamp(180px,25vw,320px);border-radius:24px"></canvas>
     <div class="hero-label reveal" style="justify-content:center">KSH Partners s.r.o.</div>
     <h1 class="reveal reveal-delay-1" id="heroTitle" style="margin-left:auto;margin-right:auto">Partner pro <em>skutečný</em> růst</h1>
     <p class="hero-sub reveal reveal-delay-2" id="heroSub" style="margin-left:auto;margin-right:auto">Kombinujeme kamenné obchody, výdejní automaty a digitální řešení. Vytváříme ekosystém, který prodává — offline i online, 24/7.</p>
