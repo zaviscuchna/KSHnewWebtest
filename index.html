@@ -887,7 +887,8 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
+    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
 
   // 3. Numbers: count-up animation
