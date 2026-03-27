@@ -889,16 +889,6 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
 
-  // 2. Pillars: nav hiding via ScrollTrigger
-  ScrollTrigger.create({
-    trigger: '.pillars-scroll-container',
-    start: 'top 80px',
-    end: 'bottom top',
-    onEnter: () => document.querySelector('nav').classList.add('nav-hidden'),
-    onLeave: () => document.querySelector('nav').classList.remove('nav-hidden'),
-    onEnterBack: () => document.querySelector('nav').classList.add('nav-hidden'),
-    onLeaveBack: () => document.querySelector('nav').classList.remove('nav-hidden'),
-  });
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
