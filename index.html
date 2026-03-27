@@ -375,6 +375,44 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   color:var(--muted);
 }
 
+/* ─── Stack Cards ──────────────────────────────────────────────── */
+.stack-section{
+  min-height:100vh;background:#0a0a0a;
+  display:flex;align-items:center;justify-content:center;padding:80px 40px;
+}
+.stack-container{position:relative;width:100%;max-width:680px;height:480px}
+.stack-card{
+  position:absolute;width:100%;background:#141414;
+  border:1px solid rgba(255,255,255,.08);border-radius:20px;
+  cursor:pointer;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+  transform-origin:center bottom;will-change:transform;
+}
+.stack-card[data-index="0"]{top:0;z-index:3;transform:rotate(0deg) translateY(0)}
+.stack-card[data-index="1"]{top:12px;z-index:2;transform:rotate(1.5deg) translateY(0)}
+.stack-card[data-index="2"]{top:24px;z-index:1;transform:rotate(-1deg) translateY(0)}
+.stack-card[data-index="0"]:hover{box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.stack-card-inner{padding:48px}
+.stack-card-header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.stack-number{font-size:13px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em}
+.stack-tag{font-size:11px;letter-spacing:.15em;color:var(--coral);font-weight:600}
+.stack-title{
+  font-family:var(--font-display);font-size:clamp(32px,5vw,52px);
+  font-weight:700;color:#fff;margin:0 0 12px 0;line-height:1.1;
+}
+.stack-desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,.45);margin:0 0 32px 0}
+.stack-items{display:flex;flex-direction:column;gap:12px}
+.stack-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:rgba(255,255,255,.04);border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);transition:background .2s ease,border-color .2s ease;
+}
+.stack-item:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12)}
+.item-name{font-size:14px;color:rgba(255,255,255,.75);font-weight:500}
+.item-badge{font-size:10px;letter-spacing:.12em;font-weight:700;padding:4px 10px;border-radius:20px}
+.item-badge.live{background:rgba(240,112,112,.15);color:var(--coral);border:1px solid rgba(240,112,112,.3)}
+.item-badge.beta{background:rgba(255,200,0,.1);color:#FFC800;border:1px solid rgba(255,200,0,.25)}
+.item-badge.wip{background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1)}
+
 /* ─── Contact ──────────────────────────────────────────────────── */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem)}
 @media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
@@ -582,6 +620,57 @@ footer{
   </div>
 </div>
 
+
+<!-- Stack Cards -->
+<div class="stack-section">
+  <div class="stack-container">
+    <div class="stack-card" data-index="0">
+      <div class="stack-card-inner">
+        <div class="stack-card-header">
+          <span class="stack-number">01</span>
+          <span class="stack-tag">WEBY & PREZENTACE</span>
+        </div>
+        <h3 class="stack-title">Webové projekty</h3>
+        <p class="stack-desc">Weby a prezentace které jsme navrhli a nasadili — od firemních prezentací po e-commerce řešení.</p>
+        <div class="stack-items">
+          <div class="stack-item"><span class="item-name">KraKrám — firemní web</span><span class="item-badge live">LIVE</span></div>
+          <div class="stack-item"><span class="item-name">Webová prezentace — specializovaná prodejna</span><span class="item-badge live">LIVE</span></div>
+          <div class="stack-item"><span class="item-name">KSH Partners — firemní web</span><span class="item-badge live">LIVE</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stack-card" data-index="1">
+      <div class="stack-card-inner">
+        <div class="stack-card-header">
+          <span class="stack-number">02</span>
+          <span class="stack-tag">APLIKACE & SOFTWARE</span>
+        </div>
+        <h3 class="stack-title">Aplikace</h3>
+        <p class="stack-desc">Rezervační systémy, správa dat a aplikace na míru — od nápadu po nasazení.</p>
+        <div class="stack-items">
+          <div class="stack-item"><span class="item-name">Rezervační systém — lyžařská škola</span><span class="item-badge live">LIVE</span></div>
+          <div class="stack-item"><span class="item-name">Rezervační systém — autocamp</span><span class="item-badge live">LIVE</span></div>
+          <div class="stack-item"><span class="item-name">E-commerce s platební bránou</span><span class="item-badge beta">BETA</span></div>
+          <div class="stack-item"><span class="item-name">Mobilní aplikace</span><span class="item-badge wip">WIP</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stack-card" data-index="2">
+      <div class="stack-card-inner">
+        <div class="stack-card-header">
+          <span class="stack-number">03</span>
+          <span class="stack-tag">KAMENNÉ OBCHODY</span>
+        </div>
+        <h3 class="stack-title">Fyzické provozovny</h3>
+        <p class="stack-desc">Provozujeme vlastní prodejny specializovaného sortimentu — od výběru lokace po každodenní chod.</p>
+        <div class="stack-items">
+          <div class="stack-item"><span class="item-name">KraKrám Tábor</span><span class="item-badge live">V PROVOZU</span></div>
+          <div class="stack-item"><span class="item-name">KraKrám Jindřichův Hradec</span><span class="item-badge live">V PROVOZU</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Contact -->
 <section class="section" id="kontakt">
@@ -951,6 +1040,41 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
+
+// ─── Stack Cards (tilt + swipe away) ──────────────────────────────
+(function() {
+  const stackCards = document.querySelectorAll('.stack-card');
+  let currentTop = 0;
+  stackCards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      if (card.dataset.index !== String(currentTop)) return;
+      const rect = card.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / rect.width * 10;
+      const dy = (e.clientY - cy) / rect.height * 6;
+      card.style.transform = `rotate(${dx * 0.4}deg) translateY(${-dy}px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      if (card.dataset.index !== String(currentTop)) return;
+      card.style.transform = 'rotate(0deg) translateY(0)';
+    });
+    card.addEventListener('click', () => {
+      if (card.dataset.index !== String(currentTop)) return;
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease';
+      card.style.transform = 'translateX(120%) rotate(15deg)';
+      card.style.opacity = '0';
+      card.style.pointerEvents = 'none';
+      currentTop++;
+      if (currentTop > 2) {
+        setTimeout(() => {
+          stackCards.forEach(c => { c.style.transform = ''; c.style.opacity = '1'; c.style.pointerEvents = ''; });
+          currentTop = 0;
+        }, 600);
+      }
+    });
+  });
+})();
 
 // ─── Magnetic Pull on nav links ──────────────────────────────────
 document.querySelectorAll('.nav-links a, .nav-cta').forEach(el => {
