@@ -1015,7 +1015,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 })
 
 // ─── Lanyard 3D Physics (Three.js + Rapier) ──────────────────────
-(async function initLanyard() {
+(async function initLanyard() { try {
   const canvas = document.getElementById('lanyardCanvas');
   if (!canvas) return;
 
@@ -1248,7 +1248,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
       }
     }
   });
-})();
+} catch(e) { console.warn('Lanyard 3D failed:', e); } })();
 
 // ─── Magnetic Pull on nav links ──────────────────────────────────
 document.querySelectorAll('.nav-links a, .nav-cta').forEach(el => {
