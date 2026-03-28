@@ -429,36 +429,42 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
 .note-wip{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-top:6px}
 
 /* ─── Contact ──────────────────────────────────────────────────── */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem)}
-@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
-.contact-info{display:flex;flex-direction:column;gap:2.5rem}
-.contact-line{
-  font-family:var(--font-display);font-size:clamp(1.2rem,2vw,1.6rem);
-  font-weight:500;letter-spacing:-.01em;
+.contact-section{
+  min-height:100vh;background:#0a0a0a;display:flex;align-items:center;padding:80px 60px;
 }
-.contact-line span{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-family:var(--font-body);font-weight:400;margin-bottom:.3rem}
-.contact-line a{transition:color .3s}
-.contact-line a:hover{color:var(--coral)}
-
-.contact-form{display:flex;flex-direction:column;gap:1.2rem}
-.contact-form input,.contact-form textarea,.contact-form select{
-  width:100%;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);padding:1rem 1.2rem;font-family:var(--font-body);
-  font-size:.9rem;border-radius:8px;outline:none;
-  transition:border-color .3s;
+@media(max-width:768px){.contact-section{padding:60px 24px}}
+.contact-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  max-width:1100px;width:100%;margin:0 auto;
 }
-.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--coral)}
-.contact-form textarea{min-height:120px;resize:vertical}
-.contact-form select{appearance:none;cursor:pointer}
-.contact-form select option{background:var(--surface)}
-.contact-form button{
-  align-self:flex-start;padding:.9rem 2.5rem;
-  background:var(--text);color:var(--bg);border:none;
-  font-family:var(--font-display);font-size:.85rem;font-weight:600;
-  letter-spacing:.02em;border-radius:100px;cursor:pointer;
-  transition:transform .3s cubic-bezier(.25,.46,.45,.94),box-shadow .3s;
+@media(max-width:768px){.contact-inner{grid-template-columns:1fr;gap:48px}}
+.contact-label{font-size:11px;letter-spacing:.15em;color:var(--coral);font-weight:600;display:block;margin-bottom:20px}
+.contact-title{
+  font-family:var(--font-display);font-size:clamp(36px,5vw,60px);
+  font-weight:700;color:#fff;line-height:1.1;margin:0 0 24px 0;letter-spacing:-.02em;
 }
-.contact-form button:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.contact-desc{font-size:15px;line-height:1.8;color:rgba(255,255,255,.45);margin:0 0 40px 0}
+.contact-info{display:flex;flex-direction:column;gap:20px}
+.contact-info-item{display:flex;flex-direction:column;gap:4px}
+.ci-label{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.3);font-weight:600}
+.ci-value{font-size:16px;color:#fff;font-weight:500;text-decoration:none;transition:color .3s}
+.ci-value:hover{color:var(--coral)}
+.contact-right input,.contact-right textarea,.contact-right select{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:14px 16px;color:#fff;font-size:15px;font-family:var(--font-body);
+  margin-bottom:12px;outline:none;transition:border-color .2s ease;box-sizing:border-box;
+}
+.contact-right input:focus,.contact-right textarea:focus,.contact-right select:focus{border-color:var(--coral)}
+.contact-right input::placeholder,.contact-right textarea::placeholder{color:rgba(255,255,255,.25)}
+.contact-right textarea{min-height:140px;resize:vertical}
+.contact-right select{appearance:none;cursor:pointer;color:rgba(255,255,255,.25)}
+.contact-right select option{background:#0a0a0a;color:#fff}
+.contact-right button[type="submit"]{
+  width:100%;background:var(--coral);color:#fff;border:none;border-radius:8px;
+  padding:16px;font-size:15px;font-weight:600;font-family:var(--font-display);
+  cursor:pointer;transition:background .2s ease,transform .2s ease;margin-top:4px;
+}
+.contact-right button[type="submit"]:hover{background:#d44d31;transform:translateY(-1px)}
 
 /* ─── Footer ───────────────────────────────────────────────────── */
 footer{
@@ -661,42 +667,43 @@ footer{
 </div>
 
 <!-- Contact -->
-<section class="section" id="kontakt">
-  <div class="section-label reveal">Kontakt</div>
-  <div class="section-title reveal reveal-delay-1">Pojďme to rozjet</div>
-  <div class="contact-grid">
-    <div class="contact-info reveal">
-      <div class="contact-line">
-        <span>Email</span>
-        <a href="mailto:info@ksh-partners.cz">info@ksh-partners.cz</a>
-      </div>
-      <div class="contact-line">
-        <span>Telefon</span>
-        <a href="tel:+420774982675">+420 774 982 675</a>
-      </div>
-      <div class="contact-line">
-        <span>Působnost</span>
-        Jižní Čechy — online po celé ČR
-      </div>
-      <div class="contact-line">
-        <span>Odpovídáme</span>
-        Do 24 hodin
+<section class="contact-section" id="kontakt">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <span class="contact-label">— KONTAKT</span>
+      <h2 class="contact-title">Pojďme si o tom promluvit.</h2>
+      <p class="contact-desc">Máte projekt, nápad nebo chcete spolupracovat? Pracujeme online s firmami po celé České republice. Sídlíme v jižních Čechách, vzdálenost nehraje roli. Ozvěte se — odpovídáme do 24 hodin.</p>
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <span class="ci-label">EMAIL</span>
+          <a href="mailto:info@ksh-partners.cz" class="ci-value">info@ksh-partners.cz</a>
+        </div>
+        <div class="contact-info-item">
+          <span class="ci-label">TELEFON</span>
+          <a href="tel:+420774982675" class="ci-value">+420 774 982 675</a>
+        </div>
+        <div class="contact-info-item">
+          <span class="ci-label">SÍDLO</span>
+          <span class="ci-value">Jižní Čechy · celá ČR online</span>
+        </div>
       </div>
     </div>
-    <form class="contact-form reveal reveal-delay-1" onsubmit="event.preventDefault();alert('Zpráva odeslána! (demo)')">
-      <input type="text" placeholder="Jméno" required>
-      <input type="text" placeholder="Firma (nepovinné)">
-      <input type="email" placeholder="E-mail" required>
-      <select>
-        <option value="" disabled selected>Oblast zájmu</option>
-        <option>Kamenný obchod</option>
-        <option>Výdejní automaty</option>
-        <option>Web / Aplikace</option>
-        <option>Jiné</option>
-      </select>
-      <textarea placeholder="Vaše zpráva…" required></textarea>
-      <button type="submit">Odeslat zprávu</button>
-    </form>
+    <div class="contact-right">
+      <form onsubmit="event.preventDefault();alert('Zpráva odeslána! (demo)')">
+        <input type="text" placeholder="Jméno" required>
+        <input type="text" placeholder="Firma (nepovinné)">
+        <input type="email" placeholder="E-mail" required>
+        <select>
+          <option value="" disabled selected>Oblast zájmu</option>
+          <option>Kamenný obchod</option>
+          <option>Výdejní automaty</option>
+          <option>Web / Aplikace</option>
+          <option>Jiné</option>
+        </select>
+        <textarea placeholder="Vaše zpráva…" required></textarea>
+        <button type="submit">Odeslat zprávu</button>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -1028,6 +1035,23 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
+
+// ─── Nav reappear at contact section ──────────────────────────────
+(function() {
+  const contactSection = document.querySelector('.contact-section') || document.querySelector('#kontakt');
+  if (!contactSection) return;
+  new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      if (entry.isIntersecting) {
+        nav.style.opacity = '1';
+        nav.style.pointerEvents = 'auto';
+        nav.style.transition = 'opacity 0.4s ease';
+      }
+    });
+  }, { threshold: 0.1 }).observe(contactSection);
+})();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
 document.querySelectorAll('.note').forEach(note => {
