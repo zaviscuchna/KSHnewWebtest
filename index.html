@@ -181,12 +181,12 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
 /* ─── Pillars Horizontal Scroll ────────────────────────────────── */
 .pillars-scroll-container{position:relative}
 .pillars-sticky{
-  position:sticky;top:0;height:100vh;overflow:hidden;
+  height:100vh;overflow:hidden;
   background:var(--coral);
-  display:block;padding:0;
+  padding:0;
 }
 .pillars-track{
-  display:flex;height:100vh;will-change:transform;
+  display:flex;height:100vh;will-change:transform;flex-wrap:nowrap;
 }
 .pillar-card{
   position:relative;min-width:100vw;width:100vw;height:100vh;
@@ -247,6 +247,11 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;min-height:100vh}
   .hero h1{font-size:clamp(48px,14vw,72px);text-align:center;max-width:100%}
   .hero-metallic-canvas{width:clamp(200px,50vw,280px)!important;height:clamp(200px,50vw,280px)!important;margin:0 auto 24px}
+  /* Pillar cards mobile text */
+  .card-title{font-size:clamp(36px,10vw,56px)!important}
+  .card-inner{padding:0 24px!important}
+  .card-number{font-size:80px!important;right:24px!important;bottom:24px!important}
+  .card-tag{bottom:24px!important}
   /* Notes */
   .notes-grid{max-width:100%!important;gap:16px;padding:0 16px}
   .note{width:clamp(90px,40vw,130px)!important;height:clamp(90px,40vw,130px)!important}
@@ -1012,17 +1017,15 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
 
 // ─── Pillars Horizontal Scroll (GSAP ScrollTrigger) ───────────────
 const pillarsTrack = document.querySelector('.pillars-track');
-const pillarsContainer = document.querySelector('.pillars-scroll-container');
-if (pillarsTrack && pillarsContainer) {
-  const pillarsCards = gsap.utils.toArray('.pillars-track .pillar-card');
-  const pillarsWidth = pillarsCards.length * window.innerWidth;
+const pillarsStickyEl = document.querySelector('.pillars-sticky');
+if (pillarsTrack && pillarsStickyEl) {
   gsap.to(pillarsTrack, {
-    x: () => -(pillarsWidth - window.innerWidth),
+    x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
     ease: 'none',
     scrollTrigger: {
-      trigger: pillarsContainer,
+      trigger: pillarsStickyEl,
       start: 'top top',
-      end: () => `+=${pillarsWidth - window.innerWidth}`,
+      end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
       scrub: 1,
       pin: true,
       anticipatePin: 1,
