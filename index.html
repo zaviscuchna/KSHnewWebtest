@@ -983,13 +983,15 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav: show only at contact+footer, hide when scrolling back up
+  // 2. Nav: visible only in hero + contact/footer
   ScrollTrigger.create({
     trigger: '.contact-section',
-    start: 'top 15%',
+    start: 'top 20%',
     end: 'bottom bottom',
-    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
-    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
+    onEnter: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+    onLeave: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+    onLeaveBack: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
+    onEnterBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
   });
 
   // 3. Numbers: count-up animation
