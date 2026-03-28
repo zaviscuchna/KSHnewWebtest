@@ -247,11 +247,8 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;min-height:100vh}
   .hero h1{font-size:clamp(48px,14vw,72px);text-align:center;max-width:100%}
   .hero-metallic-canvas{width:clamp(200px,50vw,280px)!important;height:clamp(200px,50vw,280px)!important;margin:0 auto 24px}
-  /* Horizontal scroll → native touch scroll */
-  .pillars-scroll-container{height:auto!important}
-  .pillars-sticky{position:relative!important;height:auto!important;overflow-x:scroll!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
-  .pillars-track{transform:none!important;display:flex!important;height:100vh}
-  .pillar-card{min-width:90vw!important;width:90vw!important;scroll-snap-align:center;flex-shrink:0}
+  /* Horizontal scroll — same JS logic, just adjusted sizing */
+  .pillar-card{min-width:100vw!important;width:100vw!important}
   /* Notes */
   .notes-grid{max-width:100%!important;gap:16px;padding:0 16px}
   .note{width:clamp(90px,40vw,130px)!important;height:clamp(90px,40vw,130px)!important}
@@ -1025,9 +1022,8 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (vanilla, desktop only) ────────────
+// ─── Pillars Horizontal Scroll (vanilla) ──────────────────────────
 (function() {
-  if (window.innerWidth <= 768) return;
   const container = document.querySelector('.pillars-scroll-container');
   const pTrack = document.querySelector('.pillars-track');
   if (!container || !pTrack) return;
