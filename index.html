@@ -1095,17 +1095,18 @@ document.querySelectorAll('.nav-links a').forEach(a => {
     }
   }
 
-  // Hero observer — show nav while hero is on screen
+  // Hero observer — nav hides once hero is mostly scrolled away
+  // rootMargin shrinks detection zone from top so hero "leaves" 80px before its bottom exits viewport
   new IntersectionObserver(entries => {
     heroVisible = entries[0].isIntersecting;
     updateNav();
-  }, { threshold: 0 }).observe(heroEl);
+  }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' }).observe(heroEl);
 
   // Contact observer — show nav when contact enters
   new IntersectionObserver(entries => {
     contactVisible = entries[0].isIntersecting;
     updateNav();
-  }, { threshold: 0 }).observe(contactEl);
+  }, { threshold: 0, rootMargin: '-40px 0px 0px 0px' }).observe(contactEl);
 })();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
