@@ -978,7 +978,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   // 2. Nav: show only at contact+footer, hide when scrolling back up
   ScrollTrigger.create({
     trigger: '.contact-section',
-    start: 'top 50%',
+    start: 'top 15%',
     end: 'bottom bottom',
     onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
     onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
