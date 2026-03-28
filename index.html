@@ -975,6 +975,17 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
+  // 2. Nav reappear at contact section
+  gsap.to('nav', {
+    opacity: 1,
+    pointerEvents: 'auto',
+    scrollTrigger: {
+      trigger: '.contact-section',
+      start: 'top 80%',
+      end: 'top 20%',
+      scrub: 0.5,
+    }
+  });
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -1037,22 +1048,8 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav reappear at contact/footer section ──────────────────────
+// ─── Nav reappear at contact section (via GSAP) ──────────────────
 (function() {
-  const contactSection = document.querySelector('.contact-section') || document.querySelector('#kontakt');
-  const footerSection = document.querySelector('footer');
-  const nav = document.querySelector('nav');
-  if (!nav) return;
-
-  // Force nav visible when scrolled past about-reveal
-  window.addEventListener('scroll', () => {
-    const about = document.querySelector('.about-reveal');
-    if (!about) return;
-    const aboutBottom = about.getBoundingClientRect().bottom;
-    if (aboutBottom < 0) {
-      nav.style.cssText = 'opacity:1 !important;pointer-events:auto !important;transition:opacity 0.4s ease';
-    }
-  });
 })();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
