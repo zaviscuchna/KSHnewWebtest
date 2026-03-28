@@ -252,6 +252,21 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .card-inner{padding:0 24px!important}
   .card-number{font-size:80px!important;right:24px!important;bottom:24px!important}
   .card-tag{bottom:24px!important}
+  /* Horizontal scroll — native swipe on mobile */
+  .pillars-scroll-container,.refs-scroll-container{height:auto!important}
+  .pillars-sticky,.refs-sticky{
+    position:relative!important;height:100svh!important;overflow-x:scroll!important;
+    overflow-y:hidden!important;scroll-snap-type:x mandatory!important;
+    -webkit-overflow-scrolling:touch;display:flex!important;align-items:center!important;
+  }
+  .pillars-track,.refs-track{
+    display:flex!important;transform:none!important;transition:none!important;
+    height:100%!important;flex-wrap:nowrap!important;
+  }
+  .pillar-card,.ref-card{
+    min-width:100vw!important;width:100vw!important;height:100svh!important;
+    flex-shrink:0!important;scroll-snap-align:start!important;
+  }
   /* Notes */
   .notes-grid{max-width:100%!important;gap:16px;padding:0 16px}
   .note{width:clamp(90px,40vw,130px)!important;height:clamp(90px,40vw,130px)!important}
@@ -1017,45 +1032,48 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger) ───────────────
-const pillarsTrack = document.querySelector('.pillars-track');
-const pillarsStickyEl = document.querySelector('.pillars-sticky');
-if (pillarsTrack && pillarsStickyEl) {
-  gsap.to(pillarsTrack, {
-    x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: pillarsStickyEl,
-      start: 'top top',
-      end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    }
-  });
+// ─── Horizontal Scroll (GSAP — desktop only) ─────────────────────
+if (window.innerWidth > 768) {
+  // Pillars
+  const pillarsTrack = document.querySelector('.pillars-track');
+  const pillarsStickyEl = document.querySelector('.pillars-sticky');
+  if (pillarsTrack && pillarsStickyEl) {
+    gsap.to(pillarsTrack, {
+      x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pillarsStickyEl,
+        start: 'top top',
+        end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+  }
+  // Refs
+  const refsTrack2 = document.querySelector('.refs-track');
+  const refsContainer2 = document.querySelector('.refs-scroll-container');
+  if (refsTrack2 && refsContainer2) {
+    const refsWidth = refsTrack2.scrollWidth;
+    gsap.to(refsTrack2, {
+      x: () => -(refsWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: refsContainer2,
+        start: 'top top',
+        end: () => `+=${refsWidth - window.innerWidth}`,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+  }
 }
-
-// ─── Refs Horizontal Scroll (GSAP ScrollTrigger) ──────────────────
-const refsTrack2 = document.querySelector('.refs-track');
-const refsContainer2 = document.querySelector('.refs-scroll-container');
-if (refsTrack2 && refsContainer2) {
-  const refsCards = gsap.utils.toArray('.refs-track .ref-card');
-  const refsWidth = refsCards.length * window.innerWidth;
-  gsap.to(refsTrack2, {
-    x: () => -(refsWidth - window.innerWidth),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: refsContainer2,
-      start: 'top top',
-      end: () => `+=${refsWidth - window.innerWidth}`,
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    }
-  });
-}
+// Reload on orientation change for correct layout
+window.addEventListener('resize', (() => { let w = window.innerWidth; return () => { if (Math.abs(window.innerWidth - w) > 100) { w = window.innerWidth; location.reload(); } }; })());
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
