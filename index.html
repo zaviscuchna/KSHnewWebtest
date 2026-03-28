@@ -179,7 +179,7 @@ nav{
 nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
 
 /* ─── Pillars Horizontal Scroll ────────────────────────────────── */
-.pillars-scroll-container{height:400vh;position:relative}
+.pillars-scroll-container{position:relative}
 .pillars-sticky{
   position:sticky;top:0;height:100vh;overflow:hidden;
   background:var(--coral);
@@ -247,8 +247,6 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;min-height:100vh}
   .hero h1{font-size:clamp(48px,14vw,72px);text-align:center;max-width:100%}
   .hero-metallic-canvas{width:clamp(200px,50vw,280px)!important;height:clamp(200px,50vw,280px)!important;margin:0 auto 24px}
-  /* Horizontal scroll — same JS logic, just adjusted sizing */
-  .pillar-card{min-width:100vw!important;width:100vw!important}
   /* Notes */
   .notes-grid{max-width:100%!important;gap:16px;padding:0 16px}
   .note{width:clamp(90px,40vw,130px)!important;height:clamp(90px,40vw,130px)!important}
@@ -1012,31 +1010,47 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (vanilla) ──────────────────────────
-(function() {
-  const container = document.querySelector('.pillars-scroll-container');
-  const pTrack = document.querySelector('.pillars-track');
-  if (!container || !pTrack) return;
-  window.addEventListener('scroll', () => {
-    const rect = container.getBoundingClientRect();
-    const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-    const maxShift = (pTrack.children.length - 1) * window.innerWidth;
-    pTrack.style.transform = `translateX(${-progress * maxShift}px)`;
+// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger) ───────────────
+const pillarsTrack = document.querySelector('.pillars-track');
+const pillarsContainer = document.querySelector('.pillars-scroll-container');
+if (pillarsTrack && pillarsContainer) {
+  const pillarsCards = gsap.utils.toArray('.pillars-track .pillar-card');
+  const pillarsWidth = pillarsCards.length * window.innerWidth;
+  gsap.to(pillarsTrack, {
+    x: () => -(pillarsWidth - window.innerWidth),
+    ease: 'none',
+    scrollTrigger: {
+      trigger: pillarsContainer,
+      start: 'top top',
+      end: () => `+=${pillarsWidth - window.innerWidth}`,
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    }
   });
-})();
+}
 
-// ─── Refs Horizontal Scroll (vanilla) ─────────────────────────────
-(function() {
-  const refsContainer = document.querySelector('.refs-scroll-container');
-  const refsTrack = document.querySelector('.refs-track');
-  if (!refsContainer || !refsTrack) return;
-  window.addEventListener('scroll', () => {
-    const rect = refsContainer.getBoundingClientRect();
-    const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-    const maxShift = (refsTrack.children.length - 1) * window.innerWidth;
-    refsTrack.style.transform = `translateX(${-progress * maxShift}px)`;
+// ─── Refs Horizontal Scroll (GSAP ScrollTrigger) ──────────────────
+const refsTrack2 = document.querySelector('.refs-track');
+const refsContainer2 = document.querySelector('.refs-scroll-container');
+if (refsTrack2 && refsContainer2) {
+  const refsCards = gsap.utils.toArray('.refs-track .ref-card');
+  const refsWidth = refsCards.length * window.innerWidth;
+  gsap.to(refsTrack2, {
+    x: () => -(refsWidth - window.innerWidth),
+    ease: 'none',
+    scrollTrigger: {
+      trigger: refsContainer2,
+      start: 'top top',
+      end: () => `+=${refsWidth - window.innerWidth}`,
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    }
   });
-})();
+}
 
 // ─── Scroll Reveal ────────────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
