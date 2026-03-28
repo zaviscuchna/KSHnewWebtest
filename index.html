@@ -241,6 +241,25 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   max-width:20ch;
 }
 
+/* ─── Mobile Optimization ──────────────────────────────────────── */
+@media(max-width:768px){
+  /* Hero */
+  .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px;min-height:100vh}
+  .hero h1{font-size:clamp(48px,14vw,72px);text-align:center;max-width:100%}
+  .hero-metallic-canvas{width:clamp(200px,50vw,280px)!important;height:clamp(200px,50vw,280px)!important;margin:0 auto 24px}
+  /* Horizontal scroll → native touch scroll */
+  .pillars-scroll-container{height:auto!important}
+  .pillars-sticky{position:relative!important;height:auto!important;overflow-x:scroll!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .pillars-track{transform:none!important;display:flex!important;height:100vh}
+  .pillar-card{min-width:90vw!important;width:90vw!important;scroll-snap-align:center;flex-shrink:0}
+  /* Notes */
+  .notes-grid{max-width:100%!important;gap:16px;padding:0 16px}
+  .note{width:clamp(90px,40vw,130px)!important;height:clamp(90px,40vw,130px)!important}
+  /* Contact */
+  .contact-section{padding:60px 24px}
+  .contact-inner{grid-template-columns:1fr!important;gap:40px;padding:0}
+}
+
 /* ─── Reveal Animation ─────────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -1006,8 +1025,9 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (vanilla) ──────────────────────────
+// ─── Pillars Horizontal Scroll (vanilla, desktop only) ────────────
 (function() {
+  if (window.innerWidth <= 768) return;
   const container = document.querySelector('.pillars-scroll-container');
   const pTrack = document.querySelector('.pillars-track');
   if (!container || !pTrack) return;
