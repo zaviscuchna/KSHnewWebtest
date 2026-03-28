@@ -469,14 +469,15 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
 /* ─── Footer ───────────────────────────────────────────────────── */
 footer{
   padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem);
-  border-top:1px solid var(--border);
+  border-top:1px solid rgba(255,255,255,.08);
+  background:#0a0a0a;
   display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:2rem;
 }
 .footer-left{max-width:400px}
-.footer-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;margin-bottom:.5rem}
-.footer-legal{font-size:.75rem;color:var(--muted);line-height:1.7}
-.footer-right{display:flex;gap:2rem;font-size:.75rem;color:var(--muted)}
-.footer-right a{transition:color .3s}
+.footer-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;margin-bottom:.5rem;color:#fff}
+.footer-legal{font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7}
+.footer-right{display:flex;gap:2rem;font-size:.75rem;color:rgba(255,255,255,.35)}
+.footer-right a{transition:color .3s;color:rgba(255,255,255,.35)}
 .footer-right a:hover{color:var(--coral)}
 
 /* ─── Divider ──────────────────────────────────────────────────── */
@@ -1036,21 +1037,22 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav reappear at contact section ──────────────────────────────
+// ─── Nav reappear at contact/footer section ──────────────────────
 (function() {
   const contactSection = document.querySelector('.contact-section') || document.querySelector('#kontakt');
-  if (!contactSection) return;
-  new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      const nav = document.querySelector('nav');
-      if (!nav) return;
-      if (entry.isIntersecting) {
-        nav.style.opacity = '1';
-        nav.style.pointerEvents = 'auto';
-        nav.style.transition = 'opacity 0.4s ease';
-      }
-    });
-  }, { threshold: 0.1 }).observe(contactSection);
+  const footerSection = document.querySelector('footer');
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+
+  // Force nav visible when scrolled past about-reveal
+  window.addEventListener('scroll', () => {
+    const about = document.querySelector('.about-reveal');
+    if (!about) return;
+    const aboutBottom = about.getBoundingClientRect().bottom;
+    if (aboutBottom < 0) {
+      nav.style.cssText = 'opacity:1 !important;pointer-events:auto !important;transition:opacity 0.4s ease';
+    }
+  });
 })();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
