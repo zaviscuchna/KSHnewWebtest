@@ -55,6 +55,7 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:clamp(1rem,3vw,2rem) clamp(1.5rem,5vw,4rem);
   display:flex;align-items:center;justify-content:space-between;
+  transition:opacity .3s ease;
   /* mix-blend-mode:difference; */
 }
 .nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;color:var(--coral)}
@@ -219,12 +220,7 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   line-height:1;color:rgba(255,255,255,.08);transition:color .4s ease;
 }
 .pillar-card:hover .card-number{color:rgba(0,0,0,.05)}
-@media(max-width:768px){
-  .pillars-scroll-container{height:auto}
-  .pillars-sticky{position:relative;height:auto;padding:clamp(3rem,6vw,5rem) 5vw}
-  .pillars-track{flex-direction:column;gap:1rem}
-  .pillar-card{min-width:100%;height:auto;min-height:300px}
-}
+
 
 /* ─── Section Shared ───────────────────────────────────────────── */
 .section{padding:clamp(4rem,10vw,10rem) clamp(1.5rem,5vw,4rem)}
@@ -260,7 +256,7 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
     -webkit-overflow-scrolling:touch;display:flex!important;align-items:center!important;
   }
   .pillars-track,.refs-track{
-    display:flex!important;transform:none!important;transition:none!important;
+    display:flex!important;flex-direction:row!important;transform:none!important;transition:none!important;
     height:100%!important;flex-wrap:nowrap!important;
   }
   .pillar-card,.ref-card{
@@ -995,19 +991,9 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
-    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
 
-  // 2. Nav: visible only in hero + contact/footer
-  ScrollTrigger.create({
-    trigger: '.contact-section',
-    start: 'top 20%',
-    end: 'bottom bottom',
-    onEnter: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-    onLeave: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-    onLeaveBack: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
-    onEnterBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-  });
+  // 2. Nav visibility is handled by IntersectionObserver (see below)
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -1087,8 +1073,39 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav reappear at contact section (via GSAP) ──────────────────
+// ─── Nav visibility: show only in hero + contact ─────────────────
 (function() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+
+  const heroEl = document.querySelector('.hero');
+  const contactEl = document.querySelector('.contact-section');
+  if (!heroEl || !contactEl) return;
+
+  let heroVisible = false;
+  let contactVisible = false;
+
+  function updateNav() {
+    if (heroVisible || contactVisible) {
+      nav.style.opacity = '1';
+      nav.style.pointerEvents = 'auto';
+    } else {
+      nav.style.opacity = '0';
+      nav.style.pointerEvents = 'none';
+    }
+  }
+
+  // Hero observer — show nav while hero is on screen
+  new IntersectionObserver(entries => {
+    heroVisible = entries[0].isIntersecting;
+    updateNav();
+  }, { threshold: 0 }).observe(heroEl);
+
+  // Contact observer — show nav when contact enters
+  new IntersectionObserver(entries => {
+    contactVisible = entries[0].isIntersecting;
+    updateNav();
+  }, { threshold: 0 }).observe(contactEl);
 })();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
