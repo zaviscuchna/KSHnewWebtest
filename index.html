@@ -975,13 +975,13 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav: show only at contact, hide when scrolling back up
+  // 2. Nav: show only at contact+footer, hide when scrolling back up
   ScrollTrigger.create({
     trigger: '.contact-section',
-    start: 'top 90%',
+    start: 'top 50%',
     end: 'bottom bottom',
-    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .4 }),
-    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .3 }),
+    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
   });
 
   // 3. Numbers: count-up animation
