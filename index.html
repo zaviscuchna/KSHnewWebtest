@@ -260,23 +260,19 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .contact-inner{grid-template-columns:1fr!important;gap:40px;padding:0}
   /* Hero logo sizing */
   .hero img, .hero-logo, .hero [src*="logo"]{width:280px!important;height:280px!important}
-  /* Pillars horizontal scroll — native swipe on mobile */
-  .pillars-scroll-container{height:auto!important;min-height:100svh}
+  /* Pillars — vertical fullscreen cards on mobile */
+  .pillars-scroll-container{height:auto!important}
   .pillars-sticky{
-    position:relative!important;top:auto!important;width:100vw;height:100svh!important;
-    overflow-x:scroll!important;overflow-y:hidden!important;
-    -webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;
+    position:relative!important;height:auto!important;overflow:visible!important;
     display:block!important;
   }
   .pillars-track{
-    display:flex!important;flex-wrap:nowrap!important;width:1170px!important;
-    min-width:1170px!important;height:100%!important;transform:none!important;
-    transition:none!important;will-change:unset!important;flex-shrink:0!important;
+    display:block!important;transform:none!important;transition:none!important;
+    width:100%!important;height:auto!important;
   }
   .pillar-card{
-    width:100vw!important;min-width:100vw!important;max-width:100vw!important;
-    height:100svh!important;flex-shrink:0!important;scroll-snap-align:start!important;
-    border-radius:0!important;
+    width:100vw!important;min-width:unset!important;height:100svh!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
   }
 }
 
@@ -1251,6 +1247,27 @@ function saveEdits() {
 })();
 </script>
 
-
+<script>
+if (window.innerWidth <= 768) {
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.getAll().forEach(function(st) {
+        if (st.vars && st.vars.trigger) {
+          var el = typeof st.vars.trigger === 'string' ? document.querySelector(st.vars.trigger) : st.vars.trigger;
+          if (el && (el.classList.contains('pillars-scroll-container') || el.classList.contains('pillars-sticky'))) {
+            st.kill();
+          }
+        }
+      });
+    }
+    var container = document.querySelector('.pillars-scroll-container');
+    var sticky = document.querySelector('.pillars-sticky');
+    var track = document.querySelector('.pillars-track');
+    if (container) container.style.height = 'auto';
+    if (sticky) { sticky.style.position = 'relative'; sticky.style.height = 'auto'; sticky.style.overflow = 'visible'; }
+    if (track) { track.style.transform = 'none'; track.style.display = 'block'; track.style.width = '100%'; }
+  });
+}
+</script>
 </body>
 </html>
