@@ -558,6 +558,7 @@ footer{
 </style>
 </head>
 <body>
+<div id="nav-debug" style="position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.9);color:lime;font-size:12px;padding:10px;z-index:99999;font-family:monospace;line-height:1.6;border:1px solid lime;">načítám...</div>
 
 
 <!-- Navigation -->
@@ -1169,28 +1170,36 @@ function saveEdits() {
 <!-- Nav visibility — SEPARATE script, cannot be killed by module errors -->
 <script>
 (function() {
+  var dbg = document.getElementById('nav-debug');
   var nav = document.querySelector('nav');
   var hero = document.querySelector('.hero');
-  var contact = document.querySelector('.contact-section');
-  if (!nav || !hero || !contact) return;
-
-  // Debug overlay (temporary)
-  var dbg = document.createElement('div');
-  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:lime;font:11px monospace;padding:8px 12px;border-radius:6px;pointer-events:none;line-height:1.6';
-  document.body.appendChild(dbg);
-
+  var contact = document.querySelector('.contact-section') || document.querySelector('#kontakt');
   var pillars = document.querySelector('.pillars-scroll-container');
+
+  if (!nav || !hero || !contact) {
+    if (dbg) dbg.innerHTML = 'ERROR: missing elements<br>nav:' + !!nav + ' hero:' + !!hero + ' contact:' + !!contact;
+    return;
+  }
 
   function update() {
     var hb = hero.getBoundingClientRect().bottom;
     var ct = contact.getBoundingClientRect().top;
-    var pb = pillars ? Math.round(pillars.getBoundingClientRect().bottom) : 'N/A';
-    var pt = pillars ? Math.round(pillars.getBoundingClientRect().top) : 'N/A';
+    var pt = pillars ? pillars.getBoundingClientRect().top : null;
+    var pb = pillars ? pillars.getBoundingClientRect().bottom : null;
     var inHero = hb > 0;
     var inContact = ct < window.innerHeight;
     var show = inHero || inContact;
 
-    dbg.innerHTML = 'hero.bottom:' + Math.round(hb) + '<br>pillars.top:' + pt + '<br>pillars.bottom:' + pb + '<br>contact.top:' + Math.round(ct) + '<br>nav.hidden:' + nav.classList.contains('nav-hidden') + '<br>scrollY:' + Math.round(window.scrollY) + '<br>show:' + show;
+    if (dbg) {
+      dbg.innerHTML =
+        'hero.bottom: ' + Math.round(hb) + '<br>' +
+        'pillars.top: ' + (pt !== null ? Math.round(pt) : 'null') + '<br>' +
+        'pillars.bottom: ' + (pb !== null ? Math.round(pb) : 'null') + '<br>' +
+        'contact.top: ' + Math.round(ct) + '<br>' +
+        'nav.hidden: ' + nav.classList.contains('nav-hidden') + '<br>' +
+        'scrollY: ' + Math.round(window.scrollY) + '<br>' +
+        'show: ' + show;
+    }
 
     if (show) {
       nav.classList.remove('nav-hidden');
