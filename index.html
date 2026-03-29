@@ -1082,11 +1082,18 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   const contact = document.querySelector('.contact-section');
   if (!nav || !hero || !contact) return;
 
+  // Debug overlay
+  const dbg = document.createElement('div');
+  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:#0f0;font:12px monospace;padding:8px 12px;border-radius:6px;pointer-events:none';
+  document.body.appendChild(dbg);
+
   function update() {
     const heroBottom = hero.getBoundingClientRect().bottom;
     const contactTop = contact.getBoundingClientRect().top;
     const inHero = heroBottom > 0;
     const inContact = contactTop < window.innerHeight;
+
+    dbg.textContent = `hero.bottom=${Math.round(heroBottom)} contact.top=${Math.round(contactTop)} vh=${window.innerHeight} show=${inHero||inContact}`;
 
     if (inHero || inContact) {
       nav.classList.remove('nav-hidden');
