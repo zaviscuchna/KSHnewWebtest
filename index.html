@@ -260,8 +260,12 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .contact-inner{grid-template-columns:1fr!important;gap:40px;padding:0}
   /* Hero logo sizing */
   .hero img, .hero-logo, .hero [src*="logo"]{width:280px!important;height:280px!important}
-  /* Pillar cards mobile width */
-  .pillar-card{min-width:100%!important;max-width:100%!important;width:100%!important}
+  /* Pillars — vertical fullscreen on mobile */
+  .pin-spacer{height:auto!important;padding:0!important;margin:0!important;display:block!important}
+  .pillars-scroll-container{height:auto!important}
+  .pillars-sticky{position:relative!important;height:auto!important;overflow:visible!important}
+  .pillars-track{display:flex!important;flex-direction:column!important;transform:none!important;width:100%!important}
+  .pillar-card{min-width:unset!important;width:100%!important;max-width:100vw!important;height:100svh!important}
 }
 
 /* ─── Reveal Animation ─────────────────────────────────────────── */
@@ -1011,24 +1015,28 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger) ───────────────
-const pillarsTrack = document.querySelector('.pillars-track');
-const pillarsStickyEl = document.querySelector('.pillars-sticky');
-if (pillarsTrack && pillarsStickyEl) {
-  gsap.to(pillarsTrack, {
-    x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: pillarsStickyEl,
-      start: 'top top',
-      end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
+// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger — desktop only) ─
+ScrollTrigger.matchMedia({
+  "(min-width: 769px)": function() {
+    const pillarsTrack = document.querySelector('.pillars-track');
+    const pillarsStickyEl = document.querySelector('.pillars-sticky');
+    if (pillarsTrack && pillarsStickyEl) {
+      gsap.to(pillarsTrack, {
+        x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: pillarsStickyEl,
+          start: 'top top',
+          end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        }
+      });
     }
-  });
-}
+  }
+});
 
 // ─── Refs Horizontal Scroll (GSAP ScrollTrigger) ──────────────────
 const refsTrack2 = document.querySelector('.refs-track');
