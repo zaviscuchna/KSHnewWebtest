@@ -986,7 +986,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   // 2. Nav: visible only in hero + contact/footer
   ScrollTrigger.create({
     trigger: '.contact-section',
-    start: 'top 20%',
+    start: 'top bottom',
     end: 'bottom bottom',
     onEnter: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
     onLeave: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
