@@ -554,7 +554,7 @@ footer{
   <a href="#" class="nav-logo">KSH</a>
   <div class="nav-links" id="navLinks">
     <a href="#sluzby">Služby</a>
-    <a href="#cisla">O nás</a>
+    <a href="#o-nas">O nás</a>
     <a href="#reference">Reference</a>
     <a href="#kontakt" class="nav-cta">Kontakt</a>
   </div>
@@ -629,7 +629,7 @@ footer{
 </div>
 
 <!-- About Reveal -->
-<div class="about-reveal">
+<div class="about-reveal" id="o-nas">
   <div class="about-inner">
     <h2 class="about-title">Děláme věci jinak</h2>
     <div class="about-content">
@@ -659,7 +659,7 @@ footer{
 
 
 <!-- Post-it Notes -->
-<div class="notes-section">
+<div class="notes-section" id="reference">
   <div class="notes-grid">
     <div class="note n-empty" style="--r:-8deg;--y:12px"></div>
     <div class="note" style="--r:5deg;--y:-4px" onclick="window.open('https://smenky-ksh.46.225.180.130.sslip.io','_blank')"><span class="note-label">WIP</span><div class="note-title">Směny app</div><div class="note-wip">ve vývoji</div></div>
@@ -983,7 +983,17 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav: visible only in hero + contact/footer
+  // 2a. Nav: hidden throughout middle sections (pillars → contact)
+  ScrollTrigger.create({
+    trigger: '#sluzby',
+    start: 'top top',
+    endTrigger: '.contact-section',
+    end: 'top bottom',
+    onEnter: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
+    onLeaveBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+  });
+
+  // 2b. Nav: visible only in hero + contact/footer
   ScrollTrigger.create({
     trigger: '.contact-section',
     start: 'top bottom',
