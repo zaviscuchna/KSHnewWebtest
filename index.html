@@ -1220,6 +1220,7 @@ function saveEdits() {
 
 <script>
 if (window.innerWidth <= 768) {
+  alert('debug spuštěn, šířka: ' + window.innerWidth);
   setTimeout(function() {
     var sticky = document.querySelector('.pillars-sticky');
     var track = document.querySelector('.pillars-track');
@@ -1238,7 +1239,7 @@ if (window.innerWidth <= 768) {
       'card[0].width: ' + cards[0].offsetWidth + 'px<br>' +
       'sticky.scrollWidth: ' + sticky.scrollWidth + 'px';
     document.body.appendChild(dbg);
-  }, 1000);
+  }, 3000);
 }
 </script>
 </body>
