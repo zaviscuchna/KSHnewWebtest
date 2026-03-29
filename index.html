@@ -177,7 +177,7 @@ nav{
 .hero-logo-col{will-change:transform}
 
 /* ─── Nav Hidden ───────────────────────────────────────────────── */
-nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
+nav.nav-hidden{opacity:0!important;pointer-events:none!important;transition:opacity .3s ease}
 
 /* ─── Pillars Horizontal Scroll ────────────────────────────────── */
 .pillars-scroll-container{position:relative}
@@ -991,32 +991,19 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
-    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
 
-  // 2. Nav: hidden from pillars all the way to contact
-  //    Uses a scrubbed tween pinned to 0 opacity throughout the middle sections
-  gsap.to('nav', {
-    opacity: 0,
-    pointerEvents: 'none',
-    immediateRender: false,
-    scrollTrigger: {
-      trigger: '.pillars-scroll-container',
-      start: 'top bottom',
-      endTrigger: '.contact-section',
-      end: 'top 80%',
-      onLeave: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
-      onEnterBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
-      onLeaveBack: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
-    }
-  });
-  // 2b. Nav reappears at contact
+  // 2. Nav visibility — CSS class only, no gsap.to('nav') anywhere
+  const navEl = document.querySelector('nav');
   ScrollTrigger.create({
-    trigger: '.contact-section',
-    start: 'top 80%',
-    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
-    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
-    onEnterBack: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+    trigger: '.hero',
+    start: 'bottom top',
+    endTrigger: '.contact-section',
+    end: 'top 80%',
+    onEnter: () => navEl.classList.add('nav-hidden'),
+    onLeave: () => navEl.classList.remove('nav-hidden'),
+    onEnterBack: () => navEl.classList.add('nav-hidden'),
+    onLeaveBack: () => navEl.classList.remove('nav-hidden'),
   });
 
   // 3. Numbers: count-up animation
@@ -1099,16 +1086,16 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
 // ─── Nav visibility on mobile (no GSAP) ──────────────────────────
 if (window.innerWidth <= 768) {
-  const nav = document.querySelector('nav');
+  const mobileNav = document.querySelector('nav');
   const heroEl = document.querySelector('.hero');
   const contactEl = document.querySelector('.contact-section');
-  if (nav && heroEl && contactEl) {
+  if (mobileNav && heroEl && contactEl) {
     window.addEventListener('scroll', function() {
       const heroBottom = heroEl.getBoundingClientRect().bottom;
       const contactTop = contactEl.getBoundingClientRect().top;
       const show = heroBottom > 80 || contactTop < window.innerHeight;
-      nav.style.opacity = show ? '1' : '0';
-      nav.style.pointerEvents = show ? 'auto' : 'none';
+      if (show) { mobileNav.classList.remove('nav-hidden'); }
+      else { mobileNav.classList.add('nav-hidden'); }
     }, { passive: true });
   }
 }
