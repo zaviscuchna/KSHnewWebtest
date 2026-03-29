@@ -980,8 +980,15 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
-    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
+
+  // 2. Nav: hide when hero leaves viewport (no scrub conflict)
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'bottom top',
+    onEnter: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
+    onLeaveBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+  });
 
   // 2a. Nav: hidden throughout middle sections (pillars → contact)
   ScrollTrigger.create({
