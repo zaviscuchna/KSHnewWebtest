@@ -1027,26 +1027,59 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger — desktop only) ─
-if (window.innerWidth > 768) {
-const pillarsTrack = document.querySelector('.pillars-track');
-const pillarsStickyEl = document.querySelector('.pillars-sticky');
-if (pillarsTrack && pillarsStickyEl) {
-  gsap.to(pillarsTrack, {
-    x: () => -(pillarsTrack.scrollWidth - window.innerWidth),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: pillarsStickyEl,
-      start: 'top top',
-      end: () => `+=${pillarsTrack.scrollWidth - window.innerWidth}`,
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-    }
-  });
-}
-}
+// ─── Pillars Horizontal Scroll (GSAP matchMedia) ─────────────────
+ScrollTrigger.matchMedia({
+  "(min-width: 769px)": function() {
+    const pillarsTrack = document.querySelector('.pillars-track');
+    const pillarsContainer = document.querySelector('.pillars-scroll-container');
+    if (!pillarsTrack || !pillarsContainer) return;
+    const pillarsCards = gsap.utils.toArray('.pillars-track .pillar-card');
+    const pillarsWidth = pillarsCards.length * window.innerWidth;
+    gsap.to(pillarsTrack, {
+      x: () => -(pillarsWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pillarsContainer,
+        start: 'top top',
+        end: () => `+=${pillarsWidth - window.innerWidth}`,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      }
+    });
+  },
+  "(max-width: 768px)": function() {
+    const sticky = document.querySelector('.pillars-sticky');
+    const track = document.querySelector('.pillars-track');
+    const cards = document.querySelectorAll('.pillar-card');
+    const container = document.querySelector('.pillars-scroll-container');
+    if (!sticky || !track) return;
+    const w = window.innerWidth;
+    if (container) container.style.height = 'auto';
+    sticky.style.position = 'relative';
+    sticky.style.height = '100svh';
+    sticky.style.overflowX = 'scroll';
+    sticky.style.overflowY = 'hidden';
+    sticky.style.webkitOverflowScrolling = 'touch';
+    sticky.style.scrollSnapType = 'x mandatory';
+    sticky.style.display = 'block';
+    track.style.display = 'flex';
+    track.style.flexWrap = 'nowrap';
+    track.style.width = (w * cards.length) + 'px';
+    track.style.minWidth = (w * cards.length) + 'px';
+    track.style.height = '100%';
+    track.style.transform = 'none';
+    track.style.transition = 'none';
+    cards.forEach(function(card) {
+      card.style.width = w + 'px';
+      card.style.minWidth = w + 'px';
+      card.style.height = '100svh';
+      card.style.flexShrink = '0';
+      card.style.scrollSnapAlign = 'start';
+    });
+  }
+});
 
 // ─── Refs Horizontal Scroll (GSAP ScrollTrigger) ──────────────────
 const refsTrack2 = document.querySelector('.refs-track');
@@ -1218,28 +1251,6 @@ function saveEdits() {
 })();
 </script>
 
-<script>
-if (window.innerWidth <= 768) {
-  document.addEventListener('DOMContentLoaded', function() {
-    var sticky = document.querySelector('.pillars-sticky');
-    var track = document.querySelector('.pillars-track');
-    var cards = document.querySelectorAll('.pillar-card');
-    var w = window.innerWidth;
 
-    if (!sticky || !track || !cards.length) return;
-
-    sticky.style.cssText += ';position:relative!important;height:100svh;overflow-x:scroll;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;display:block';
-
-    track.style.cssText += ';display:flex;flex-wrap:nowrap;width:' + (w * cards.length) + 'px;min-width:' + (w * cards.length) + 'px;height:100%;transform:none;transition:none';
-
-    cards.forEach(function(card) {
-      card.style.cssText += ';width:' + w + 'px;min-width:' + w + 'px;height:100svh;flex-shrink:0;scroll-snap-align:start';
-    });
-
-    var container = document.querySelector('.pillars-scroll-container');
-    if (container) container.style.height = 'auto';
-  });
-}
-</script>
 </body>
 </html>
