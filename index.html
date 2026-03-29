@@ -983,28 +983,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav: hidden from pillars to contact (overwrite:true prevents conflicts)
-  ScrollTrigger.create({
-    trigger: '.pillars-scroll-container',
-    start: 'top 80px',
-    endTrigger: '.contact-section',
-    end: 'top 80px',
-    toggleActions: 'none none none none',
-    onToggle: self => {
-      if (self.isActive) {
-        gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: 0.3, overwrite: true });
-      } else {
-        gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: 0.3, overwrite: true });
-      }
-    },
-  });
-
-  ScrollTrigger.create({
-    trigger: '.contact-section',
-    start: 'top 80px',
-    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: 0.3, overwrite: true }),
-    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: 0.3, overwrite: true }),
-  });
+  // 2. Nav middle/contact visibility handled by separate scroll listener (see below)
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -1174,6 +1153,44 @@ function saveEdits() {
     })
   } catch {}
 })()
+</script>
+
+<!-- Nav visibility: scroll listener independent of GSAP -->
+<script>
+(function() {
+  var nav = document.querySelector('nav');
+  var hero = document.querySelector('.hero');
+  var contact = document.querySelector('.contact-section');
+  if (!nav || !hero || !contact) return;
+
+  function getContactTop() {
+    return contact.getBoundingClientRect().top + window.scrollY;
+  }
+
+  function getHeroBottom() {
+    return hero.getBoundingClientRect().bottom + window.scrollY;
+  }
+
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    var heroBot = getHeroBottom();
+    var vh = window.innerHeight;
+
+    if (scrollY < heroBot - vh) {
+      return;
+    }
+
+    var contactTop = getContactTop();
+
+    if (scrollY + vh >= contactTop) {
+      nav.style.opacity = '1';
+      nav.style.pointerEvents = 'auto';
+    } else {
+      nav.style.opacity = '0';
+      nav.style.pointerEvents = 'none';
+    }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
