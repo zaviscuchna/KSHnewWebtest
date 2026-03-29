@@ -1019,7 +1019,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
 }
 
 // ─── Horizontal Scroll (GSAP — desktop only) ─────────────────────
-if (window.innerWidth > 768) {
+if (window.innerWidth > 768 && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   // Pillars
   const pillarsTrack = document.querySelector('.pillars-track');
   const pillarsStickyEl = document.querySelector('.pillars-sticky');
@@ -1073,42 +1073,7 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav visibility (runs AFTER all GSAP setup) ─────────────────
-// Uses getBoundingClientRect which always returns correct screen positions
-// regardless of GSAP pins, spacers, or transforms
-(function() {
-  const nav = document.querySelector('nav');
-  const hero = document.querySelector('.hero');
-  const contact = document.querySelector('.contact-section');
-  if (!nav || !hero || !contact) return;
-
-  // Debug overlay
-  const dbg = document.createElement('div');
-  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:lime;font:11px monospace;padding:8px 12px;border-radius:6px;pointer-events:none;line-height:1.6';
-  document.body.appendChild(dbg);
-
-  const pillars = document.querySelector('.pillars-scroll-container');
-
-  function update() {
-    const heroBottom = hero.getBoundingClientRect().bottom;
-    const contactTop = contact.getBoundingClientRect().top;
-    const pillarsTop = pillars ? pillars.getBoundingClientRect().top : 'N/A';
-    const pillarsBottom = pillars ? pillars.getBoundingClientRect().bottom : 'N/A';
-    const inHero = heroBottom > 0;
-    const inContact = contactTop < window.innerHeight;
-
-    dbg.innerHTML = `hero.bottom: ${Math.round(heroBottom)}<br>pillars.top: ${typeof pillarsTop === 'number' ? Math.round(pillarsTop) : pillarsTop}<br>pillars.bottom: ${typeof pillarsBottom === 'number' ? Math.round(pillarsBottom) : pillarsBottom}<br>contact.top: ${Math.round(contactTop)}<br>nav.hidden: ${nav.classList.contains('nav-hidden')}<br>scrollY: ${Math.round(window.scrollY)}<br>show: ${inHero||inContact}`;
-
-    if (inHero || inContact) {
-      nav.classList.remove('nav-hidden');
-    } else {
-      nav.classList.add('nav-hidden');
-    }
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-})();
+// Nav visibility moved to separate script tag (see below)
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
 document.querySelectorAll('.note').forEach(note => {
@@ -1199,6 +1164,44 @@ function saveEdits() {
     })
   } catch {}
 })()
+</script>
+
+<!-- Nav visibility — SEPARATE script, cannot be killed by module errors -->
+<script>
+(function() {
+  var nav = document.querySelector('nav');
+  var hero = document.querySelector('.hero');
+  var contact = document.querySelector('.contact-section');
+  if (!nav || !hero || !contact) return;
+
+  // Debug overlay (temporary)
+  var dbg = document.createElement('div');
+  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:lime;font:11px monospace;padding:8px 12px;border-radius:6px;pointer-events:none;line-height:1.6';
+  document.body.appendChild(dbg);
+
+  var pillars = document.querySelector('.pillars-scroll-container');
+
+  function update() {
+    var hb = hero.getBoundingClientRect().bottom;
+    var ct = contact.getBoundingClientRect().top;
+    var pb = pillars ? Math.round(pillars.getBoundingClientRect().bottom) : 'N/A';
+    var pt = pillars ? Math.round(pillars.getBoundingClientRect().top) : 'N/A';
+    var inHero = hb > 0;
+    var inContact = ct < window.innerHeight;
+    var show = inHero || inContact;
+
+    dbg.innerHTML = 'hero.bottom:' + Math.round(hb) + '<br>pillars.top:' + pt + '<br>pillars.bottom:' + pb + '<br>contact.top:' + Math.round(ct) + '<br>nav.hidden:' + nav.classList.contains('nav-hidden') + '<br>scrollY:' + Math.round(window.scrollY) + '<br>show:' + show;
+
+    if (show) {
+      nav.classList.remove('nav-hidden');
+    } else {
+      nav.classList.add('nav-hidden');
+    }
+  }
+
+  window.addEventListener('scroll', update, false);
+  update();
+})();
 </script>
 </body>
 </html>
