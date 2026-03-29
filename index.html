@@ -991,9 +991,18 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
+    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav visibility is handled by IntersectionObserver (see below)
+  // 2. Nav reappears at contact section
+  ScrollTrigger.create({
+    trigger: '.contact-section',
+    start: 'top 80%',
+    end: 'bottom top',
+    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .3 }),
+    onEnterBack: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+  });
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -1073,33 +1082,21 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav visibility: show only in hero + contact ─────────────────
-(function() {
+// ─── Nav visibility on mobile (no GSAP) ──────────────────────────
+if (window.innerWidth <= 768) {
   const nav = document.querySelector('nav');
-  if (!nav) return;
   const heroEl = document.querySelector('.hero');
   const contactEl = document.querySelector('.contact-section');
-  if (!heroEl || !contactEl) return;
-
-  let navShown = true;
-  function setNav(show) {
-    if (show === navShown) return;
-    navShown = show;
-    nav.style.opacity = show ? '1' : '0';
-    nav.style.pointerEvents = show ? 'auto' : 'none';
+  if (nav && heroEl && contactEl) {
+    window.addEventListener('scroll', function() {
+      const heroBottom = heroEl.getBoundingClientRect().bottom;
+      const contactTop = contactEl.getBoundingClientRect().top;
+      const show = heroBottom > 80 || contactTop < window.innerHeight;
+      nav.style.opacity = show ? '1' : '0';
+      nav.style.pointerEvents = show ? 'auto' : 'none';
+    }, { passive: true });
   }
-
-  function check() {
-    const heroRect = heroEl.getBoundingClientRect();
-    const contactRect = contactEl.getBoundingClientRect();
-    const inHero = heroRect.bottom > 100;
-    const inContact = contactRect.top < window.innerHeight - 40;
-    setNav(inHero || inContact);
-  }
-
-  window.addEventListener('scroll', check, { passive: true });
-  check();
-})();
+}
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
 document.querySelectorAll('.note').forEach(note => {
