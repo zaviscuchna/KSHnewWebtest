@@ -994,13 +994,28 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
     .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav reappears at contact section
+  // 2. Nav: hidden from pillars all the way to contact
+  //    Uses a scrubbed tween pinned to 0 opacity throughout the middle sections
+  gsap.to('nav', {
+    opacity: 0,
+    pointerEvents: 'none',
+    immediateRender: false,
+    scrollTrigger: {
+      trigger: '.pillars-scroll-container',
+      start: 'top bottom',
+      endTrigger: '.contact-section',
+      end: 'top 80%',
+      onLeave: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+      onEnterBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
+      onLeaveBack: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
+    }
+  });
+  // 2b. Nav reappears at contact
   ScrollTrigger.create({
     trigger: '.contact-section',
     start: 'top 80%',
-    end: 'bottom top',
     onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
-    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .3 }),
+    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: .2 }),
     onEnterBack: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: .3 }),
   });
 
