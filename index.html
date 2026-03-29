@@ -1217,5 +1217,29 @@ function saveEdits() {
   }, { passive: true });
 })();
 </script>
+
+<script>
+if (window.innerWidth <= 768) {
+  setTimeout(function() {
+    var sticky = document.querySelector('.pillars-sticky');
+    var track = document.querySelector('.pillars-track');
+    var cards = document.querySelectorAll('.pillar-card');
+    var dbg = document.createElement('div');
+    dbg.style.cssText = 'position:fixed;top:10px;left:10px;background:black;color:lime;font-size:11px;padding:8px;z-index:99999;font-family:monospace;line-height:1.6;max-width:90vw;word-break:break-all;';
+    dbg.innerHTML =
+      'sticky.overflow: ' + getComputedStyle(sticky).overflow + '<br>' +
+      'sticky.overflowX: ' + getComputedStyle(sticky).overflowX + '<br>' +
+      'sticky.display: ' + getComputedStyle(sticky).display + '<br>' +
+      'sticky.width: ' + sticky.offsetWidth + 'px<br>' +
+      'track.width: ' + track.scrollWidth + 'px<br>' +
+      'track.transform: ' + getComputedStyle(track).transform + '<br>' +
+      'track.display: ' + getComputedStyle(track).display + '<br>' +
+      'cards: ' + cards.length + '<br>' +
+      'card[0].width: ' + cards[0].offsetWidth + 'px<br>' +
+      'sticky.scrollWidth: ' + sticky.scrollWidth + 'px';
+    document.body.appendChild(dbg);
+  }, 1000);
+}
+</script>
 </body>
 </html>
