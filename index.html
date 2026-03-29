@@ -552,7 +552,7 @@ footer{
   .pillars-scroll-container,
   .pin-spacer{height:auto!important;padding:0!important;margin:0!important;overflow:visible!important}
   .pillars-scroll-container{min-height:300svh!important}
-  .pillars-sticky{position:relative!important;height:auto!important;overflow:visible!important}
+  .pillars-sticky{position:relative!important;height:auto!important;overflow:visible!important;background:#E8593C!important}
   .pillars-track{display:flex!important;flex-direction:column!important;transform:none!important;width:100%!important}
   .pillar-card{min-width:0!important;width:100%!important;max-width:100%!important;height:100svh!important;flex-shrink:0!important}
 }
@@ -1227,26 +1227,6 @@ function saveEdits() {
 })();
 </script>
 
-<script>
-if (window.innerWidth <= 768) {
-  setTimeout(function() {
-    var d = document.createElement('div');
-    d.style.cssText = 'position:fixed;top:0;left:0;background:black;color:lime;font-size:11px;padding:8px;z-index:99999;font-family:monospace;';
-    var container = document.querySelector('.pillars-scroll-container');
-    var sticky = document.querySelector('.pillars-sticky');
-    var track = document.querySelector('.pillars-track');
-    var cards = document.querySelectorAll('.pillar-card');
-    d.innerHTML =
-      'container.height: ' + (container ? container.offsetHeight : 'null') + '<br>' +
-      'sticky.height: ' + (sticky ? sticky.offsetHeight : 'null') + '<br>' +
-      'track.height: ' + (track ? track.offsetHeight : 'null') + '<br>' +
-      'cards: ' + cards.length + '<br>' +
-      'card0.height: ' + (cards[0] ? cards[0].offsetHeight : 'null') + '<br>' +
-      'card1.height: ' + (cards[1] ? cards[1].offsetHeight : 'null') + '<br>' +
-      'card2.height: ' + (cards[2] ? cards[2].offsetHeight : 'null');
-    document.body.appendChild(d);
-  }, 2000);
-}
-</script>
+
 </body>
 </html>
