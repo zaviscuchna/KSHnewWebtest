@@ -1167,6 +1167,12 @@ function saveEdits() {
     return contact.getBoundingClientRect().top + window.scrollY;
   }
 
+  function getShowNavFrom() {
+    var notes = document.querySelector('.notes-section');
+    if (notes) return notes.getBoundingClientRect().bottom + window.scrollY;
+    return contact ? contact.getBoundingClientRect().top + window.scrollY : Infinity;
+  }
+
   function getHeroBottom() {
     return hero.getBoundingClientRect().bottom + window.scrollY;
   }
@@ -1180,9 +1186,7 @@ function saveEdits() {
       return;
     }
 
-    var contactTop = getContactTop();
-
-    if (scrollY + vh >= contactTop) {
+    if (scrollY + vh >= getShowNavFrom()) {
       nav.style.opacity = '1';
       nav.style.pointerEvents = 'auto';
     } else {
