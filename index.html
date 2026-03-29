@@ -1077,36 +1077,28 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 (function() {
   const nav = document.querySelector('nav');
   if (!nav) return;
-
   const heroEl = document.querySelector('.hero');
   const contactEl = document.querySelector('.contact-section');
   if (!heroEl || !contactEl) return;
 
-  let heroVisible = false;
-  let contactVisible = false;
-
-  function updateNav() {
-    if (heroVisible || contactVisible) {
-      nav.style.opacity = '1';
-      nav.style.pointerEvents = 'auto';
-    } else {
-      nav.style.opacity = '0';
-      nav.style.pointerEvents = 'none';
-    }
+  let navShown = true;
+  function setNav(show) {
+    if (show === navShown) return;
+    navShown = show;
+    nav.style.opacity = show ? '1' : '0';
+    nav.style.pointerEvents = show ? 'auto' : 'none';
   }
 
-  // Hero observer — nav hides once hero is mostly scrolled away
-  // rootMargin shrinks detection zone from top so hero "leaves" 80px before its bottom exits viewport
-  new IntersectionObserver(entries => {
-    heroVisible = entries[0].isIntersecting;
-    updateNav();
-  }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' }).observe(heroEl);
+  function check() {
+    const heroRect = heroEl.getBoundingClientRect();
+    const contactRect = contactEl.getBoundingClientRect();
+    const inHero = heroRect.bottom > 100;
+    const inContact = contactRect.top < window.innerHeight - 40;
+    setNav(inHero || inContact);
+  }
 
-  // Contact observer — show nav when contact enters
-  new IntersectionObserver(entries => {
-    contactVisible = entries[0].isIntersecting;
-    updateNav();
-  }, { threshold: 0, rootMargin: '-40px 0px 0px 0px' }).observe(contactEl);
+  window.addEventListener('scroll', check, { passive: true });
+  check();
 })();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
