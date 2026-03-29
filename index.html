@@ -1084,16 +1084,20 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 
   // Debug overlay
   const dbg = document.createElement('div');
-  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:#0f0;font:12px monospace;padding:8px 12px;border-radius:6px;pointer-events:none';
+  dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;z-index:9999;background:rgba(0,0,0,.85);color:lime;font:11px monospace;padding:8px 12px;border-radius:6px;pointer-events:none;line-height:1.6';
   document.body.appendChild(dbg);
+
+  const pillars = document.querySelector('.pillars-scroll-container');
 
   function update() {
     const heroBottom = hero.getBoundingClientRect().bottom;
     const contactTop = contact.getBoundingClientRect().top;
+    const pillarsTop = pillars ? pillars.getBoundingClientRect().top : 'N/A';
+    const pillarsBottom = pillars ? pillars.getBoundingClientRect().bottom : 'N/A';
     const inHero = heroBottom > 0;
     const inContact = contactTop < window.innerHeight;
 
-    dbg.textContent = `hero.bottom=${Math.round(heroBottom)} contact.top=${Math.round(contactTop)} vh=${window.innerHeight} show=${inHero||inContact}`;
+    dbg.innerHTML = `hero.bottom: ${Math.round(heroBottom)}<br>pillars.top: ${typeof pillarsTop === 'number' ? Math.round(pillarsTop) : pillarsTop}<br>pillars.bottom: ${typeof pillarsBottom === 'number' ? Math.round(pillarsBottom) : pillarsBottom}<br>contact.top: ${Math.round(contactTop)}<br>nav.hidden: ${nav.classList.contains('nav-hidden')}<br>scrollY: ${Math.round(window.scrollY)}<br>show: ${inHero||inContact}`;
 
     if (inHero || inContact) {
       nav.classList.remove('nav-hidden');
