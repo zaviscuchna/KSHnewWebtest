@@ -980,35 +980,30 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   heroTl
     .to('.hero-text-col', { opacity: 0, y: -60, duration: 1 }, 0)
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
-    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
+    .to('.hero-scroll', { opacity: 0, duration: .3 }, 0)
+    .to('nav', { opacity: 0, pointerEvents: 'none', duration: .5 }, 0);
 
-  // 2. Nav: hide when hero leaves viewport (no scrub conflict)
+  // 2. Nav: hidden from pillars to contact (overwrite:true prevents conflicts)
   ScrollTrigger.create({
-    trigger: '.hero',
-    start: 'bottom top',
-    onEnter: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
-    onLeaveBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-  });
-
-  // 2a. Nav: hidden throughout middle sections (pillars → contact)
-  ScrollTrigger.create({
-    trigger: '.pillars-sticky',
-    start: 'top top',
+    trigger: '.pillars-scroll-container',
+    start: 'top 80px',
     endTrigger: '.contact-section',
-    end: 'top bottom',
-    onEnter: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
-    onLeaveBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+    end: 'top 80px',
+    toggleActions: 'none none none none',
+    onToggle: self => {
+      if (self.isActive) {
+        gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: 0.3, overwrite: true });
+      } else {
+        gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: 0.3, overwrite: true });
+      }
+    },
   });
 
-  // 2b. Nav: visible only in hero + contact/footer
   ScrollTrigger.create({
     trigger: '.contact-section',
-    start: 'top bottom',
-    end: 'bottom bottom',
-    onEnter: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-    onLeave: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
-    onLeaveBack: () => gsap.set('nav', { opacity: 0, pointerEvents: 'none' }),
-    onEnterBack: () => gsap.set('nav', { opacity: 1, pointerEvents: 'auto' }),
+    start: 'top 80px',
+    onEnter: () => gsap.to('nav', { opacity: 1, pointerEvents: 'auto', duration: 0.3, overwrite: true }),
+    onLeaveBack: () => gsap.to('nav', { opacity: 0, pointerEvents: 'none', duration: 0.3, overwrite: true }),
   });
 
   // 3. Numbers: count-up animation
