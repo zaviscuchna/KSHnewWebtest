@@ -1166,37 +1166,31 @@ function saveEdits() {
 })()
 </script>
 
-<!-- Nav visibility — SEPARATE script, cannot be killed by module errors -->
+<!-- Nav visibility — SEPARATE script, scroll-based -->
 <script>
 (function() {
   var nav = document.querySelector('nav');
-  var hideSections = [
-    document.querySelector('.pillars-sticky'),
-    document.querySelector('.refs-sticky'),
-  ];
-  var showSections = [
-    document.querySelector('.hero'),
-    document.querySelector('.contact-section') || document.querySelector('#kontakt'),
-  ];
-
   if (!nav) return;
 
-  var navObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (hideSections.indexOf(entry.target) !== -1 && entry.isIntersecting) {
-        nav.classList.add('nav-hidden');
-      }
-      if (hideSections.indexOf(entry.target) !== -1 && !entry.isIntersecting) {
-        nav.classList.remove('nav-hidden');
-      }
-      if (showSections.indexOf(entry.target) !== -1 && entry.isIntersecting) {
-        nav.classList.remove('nav-hidden');
-      }
-    });
-  }, { threshold: 0.1 });
+  var hero = document.querySelector('.hero');
+  var contact = document.querySelector('.contact-section') || document.querySelector('#kontakt');
+  var heroHeight = hero ? hero.offsetHeight : window.innerHeight;
+  var contactTop = contact ? contact.offsetTop : Infinity;
 
-  hideSections.forEach(function(el) { if (el) navObserver.observe(el); });
-  showSections.forEach(function(el) { if (el) navObserver.observe(el); });
+  function updateNav() {
+    var scrollY = window.scrollY;
+    var vh = window.innerHeight;
+    var shouldHide = scrollY > heroHeight && scrollY + vh < contactTop;
+
+    if (shouldHide) {
+      nav.classList.add('nav-hidden');
+    } else {
+      nav.classList.remove('nav-hidden');
+    }
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
 })();
 </script>
 </body>
