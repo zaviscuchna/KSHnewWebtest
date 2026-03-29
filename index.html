@@ -964,6 +964,17 @@ void main(){
   img.src = 'logo-small.png';
 })();
 
+// ─── Hero Canvas Mobile Resize ───────────────────────────────────
+function resizeHeroCanvas() {
+  const canvas = document.querySelector('.hero canvas') || document.querySelector('#hero-canvas') || document.querySelector('canvas');
+  if (!canvas) return;
+  if (window.innerWidth <= 768) {
+    canvas.style.width = '280px';
+    canvas.style.height = '280px';
+  }
+}
+resizeHeroCanvas();
+window.addEventListener('resize', resizeHeroCanvas);
 
 // ─── GSAP ScrollTrigger ───────────────────────────────────────────
 if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
