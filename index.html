@@ -558,7 +558,6 @@ footer{
 </style>
 </head>
 <body>
-<div id="nav-debug" style="position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.9);color:lime;font-size:12px;padding:10px;z-index:99999;font-family:monospace;line-height:1.6;border:1px solid lime;">načítám...</div>
 
 
 <!-- Navigation -->
@@ -1170,46 +1169,34 @@ function saveEdits() {
 <!-- Nav visibility — SEPARATE script, cannot be killed by module errors -->
 <script>
 (function() {
-  var dbg = document.getElementById('nav-debug');
   var nav = document.querySelector('nav');
-  var hero = document.querySelector('.hero');
-  var contact = document.querySelector('.contact-section') || document.querySelector('#kontakt');
-  var pillars = document.querySelector('.pillars-scroll-container');
+  var hideSections = [
+    document.querySelector('.pillars-sticky'),
+    document.querySelector('.refs-sticky'),
+  ];
+  var showSections = [
+    document.querySelector('.hero'),
+    document.querySelector('.contact-section') || document.querySelector('#kontakt'),
+  ];
 
-  if (!nav || !hero || !contact) {
-    if (dbg) dbg.innerHTML = 'ERROR: missing elements<br>nav:' + !!nav + ' hero:' + !!hero + ' contact:' + !!contact;
-    return;
-  }
+  if (!nav) return;
 
-  function update() {
-    var hb = hero.getBoundingClientRect().bottom;
-    var ct = contact.getBoundingClientRect().top;
-    var pt = pillars ? pillars.getBoundingClientRect().top : null;
-    var pb = pillars ? pillars.getBoundingClientRect().bottom : null;
-    var inHero = hb > 0;
-    var inContact = ct < window.innerHeight;
-    var show = inHero || inContact;
+  var navObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (hideSections.indexOf(entry.target) !== -1 && entry.isIntersecting) {
+        nav.classList.add('nav-hidden');
+      }
+      if (hideSections.indexOf(entry.target) !== -1 && !entry.isIntersecting) {
+        nav.classList.remove('nav-hidden');
+      }
+      if (showSections.indexOf(entry.target) !== -1 && entry.isIntersecting) {
+        nav.classList.remove('nav-hidden');
+      }
+    });
+  }, { threshold: 0.1 });
 
-    if (dbg) {
-      dbg.innerHTML =
-        'hero.bottom: ' + Math.round(hb) + '<br>' +
-        'pillars.top: ' + (pt !== null ? Math.round(pt) : 'null') + '<br>' +
-        'pillars.bottom: ' + (pb !== null ? Math.round(pb) : 'null') + '<br>' +
-        'contact.top: ' + Math.round(ct) + '<br>' +
-        'nav.hidden: ' + nav.classList.contains('nav-hidden') + '<br>' +
-        'scrollY: ' + Math.round(window.scrollY) + '<br>' +
-        'show: ' + show;
-    }
-
-    if (show) {
-      nav.classList.remove('nav-hidden');
-    } else {
-      nav.classList.add('nav-hidden');
-    }
-  }
-
-  window.addEventListener('scroll', update, false);
-  update();
+  hideSections.forEach(function(el) { if (el) navObserver.observe(el); });
+  showSections.forEach(function(el) { if (el) navObserver.observe(el); });
 })();
 </script>
 </body>
