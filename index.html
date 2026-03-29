@@ -260,6 +260,20 @@ nav.nav-hidden{opacity:0;pointer-events:none;transition:opacity .3s ease}
   .contact-inner{grid-template-columns:1fr!important;gap:40px;padding:0}
   /* Hero logo sizing */
   .hero img, .hero-logo, .hero [src*="logo"]{width:280px!important;height:280px!important}
+  /* Pillars horizontal scroll — native swipe on mobile */
+  .pillars-scroll-container{height:auto!important}
+  .pillars-sticky{
+    position:relative!important;height:100svh!important;overflow-x:scroll!important;
+    overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;
+    display:flex!important;align-items:center!important;
+  }
+  .pillars-track{
+    transform:none!important;display:flex!important;height:100%!important;will-change:unset!important;
+  }
+  .pillar-card{
+    min-width:100vw!important;width:100vw!important;height:100svh!important;
+    flex-shrink:0!important;scroll-snap-align:start!important;border-radius:0!important;
+  }
 }
 
 /* ─── Reveal Animation ─────────────────────────────────────────── */
@@ -1009,7 +1023,8 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
   });
 }
 
-// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger) ───────────────
+// ─── Pillars Horizontal Scroll (GSAP ScrollTrigger — desktop only) ─
+if (window.innerWidth > 768) {
 const pillarsTrack = document.querySelector('.pillars-track');
 const pillarsStickyEl = document.querySelector('.pillars-sticky');
 if (pillarsTrack && pillarsStickyEl) {
@@ -1026,6 +1041,7 @@ if (pillarsTrack && pillarsStickyEl) {
       invalidateOnRefresh: true,
     }
   });
+}
 }
 
 // ─── Refs Horizontal Scroll (GSAP ScrollTrigger) ──────────────────
