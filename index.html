@@ -55,7 +55,7 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:clamp(1rem,3vw,2rem) clamp(1.5rem,5vw,4rem);
   display:flex;align-items:center;justify-content:space-between;
-  transition:opacity .3s ease;
+  transition:opacity .5s cubic-bezier(.25,.46,.45,.94);
   /* mix-blend-mode:difference; */
 }
 .nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em;color:var(--coral)}
@@ -177,7 +177,7 @@ nav{
 .hero-logo-col{will-change:transform}
 
 /* ─── Nav Hidden ───────────────────────────────────────────────── */
-nav.nav-hidden{opacity:0!important;pointer-events:none!important;transition:opacity .3s ease}
+nav.nav-hidden{opacity:0!important;pointer-events:none!important;transition:opacity .5s cubic-bezier(.25,.46,.45,.94)}
 
 /* ─── Pillars Horizontal Scroll ────────────────────────────────── */
 .pillars-scroll-container{position:relative}
@@ -993,18 +993,7 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     .to('.hero-metallic-canvas', { scale: 1.8, opacity: .3, duration: 1 }, 0)
     .to('.hero-scroll', { opacity: 0, duration: .3 }, 0);
 
-  // 2. Nav visibility — CSS class only, no gsap.to('nav') anywhere
-  const navEl = document.querySelector('nav');
-  ScrollTrigger.create({
-    trigger: '.hero',
-    start: 'bottom top',
-    endTrigger: '.contact-section',
-    end: 'top 80%',
-    onEnter: () => navEl.classList.add('nav-hidden'),
-    onLeave: () => navEl.classList.remove('nav-hidden'),
-    onEnterBack: () => navEl.classList.add('nav-hidden'),
-    onLeaveBack: () => navEl.classList.remove('nav-hidden'),
-  });
+  // 2. Nav visibility handled by scroll listener after all GSAP setup (see below)
 
   // 3. Numbers: count-up animation
   document.querySelectorAll('.num').forEach(el => {
@@ -1084,21 +1073,31 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
 })
 
-// ─── Nav visibility on mobile (no GSAP) ──────────────────────────
-if (window.innerWidth <= 768) {
-  const mobileNav = document.querySelector('nav');
-  const heroEl = document.querySelector('.hero');
-  const contactEl = document.querySelector('.contact-section');
-  if (mobileNav && heroEl && contactEl) {
-    window.addEventListener('scroll', function() {
-      const heroBottom = heroEl.getBoundingClientRect().bottom;
-      const contactTop = contactEl.getBoundingClientRect().top;
-      const show = heroBottom > 80 || contactTop < window.innerHeight;
-      if (show) { mobileNav.classList.remove('nav-hidden'); }
-      else { mobileNav.classList.add('nav-hidden'); }
-    }, { passive: true });
+// ─── Nav visibility (runs AFTER all GSAP setup) ─────────────────
+// Uses getBoundingClientRect which always returns correct screen positions
+// regardless of GSAP pins, spacers, or transforms
+(function() {
+  const nav = document.querySelector('nav');
+  const hero = document.querySelector('.hero');
+  const contact = document.querySelector('.contact-section');
+  if (!nav || !hero || !contact) return;
+
+  function update() {
+    const heroBottom = hero.getBoundingClientRect().bottom;
+    const contactTop = contact.getBoundingClientRect().top;
+    const inHero = heroBottom > 0;
+    const inContact = contactTop < window.innerHeight;
+
+    if (inHero || inContact) {
+      nav.classList.remove('nav-hidden');
+    } else {
+      nav.classList.add('nav-hidden');
+    }
   }
-}
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
 
 // ─── Post-it Notes tilt ───────────────────────────────────────────
 document.querySelectorAll('.note').forEach(note => {
